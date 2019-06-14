@@ -1,5 +1,7 @@
 class Version < ActiveRecord::Base
   belongs_to :user
   belongs_to :product
-  has_many :contributors, :class_name => 'User', :foreign_key => 'user_id'
+  has_many :version_users
+  has_many :users, through: :version_users
+  has_many :tasks
 end

@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_secure_password
   has_many :products
-  belongs_to :version, required: false
+  has_many :version_users
+  has_many :versions, through: :version_users
 end

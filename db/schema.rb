@@ -11,12 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190614011422) do
+ActiveRecord::Schema.define(version: 20190614013135) do
 
   create_table "products", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
     t.string   "status"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.string   "reward"
+    t.integer  "version_id"
+    t.integer  "product_id"
     t.integer  "user_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -29,6 +40,11 @@ ActiveRecord::Schema.define(version: 20190614011422) do
     t.float    "balance"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "version_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "version_id"
   end
 
   create_table "versions", force: :cascade do |t|
