@@ -1,4 +1,4 @@
-<section class="hero is-dark is-bold">
+<section class="hero is-dark is-bold" id="dashboard_hero">
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
@@ -16,7 +16,7 @@
   </div>
 </section>
 
-<section class="container">
+<section class="container" id="dashboard-products-table-section">
   <h2 class="title">Your Products</h2>
   <a href="/products/new" class="button is-small">New product</a>
   <table class="table">
@@ -40,7 +40,9 @@
         <td><%= product.name %></td>
         <td><%= product.description %></td>
         <td><%= product.status %></td>
-        <td><%= product.git_repo %></td>
+        <td>
+          <a href="<%= product.git_repo %>"><%= product.git_repo %></a>
+        </td>
         <td><%= product.created_at %></td>
         <td><%= product.updated_at %></td>
       </tr>
