@@ -33,15 +33,20 @@ class UsersController < ApplicationController
 
   get '/login' do
     if !logged_in?
-      flash[:notice] = "You need to be logged in to access this page."
       erb :"/users/login.html"
     else
+      flash[:notice] = "You're already logged in."
       redirect '/dashboard'
     end
   end
 
   post '/login' do
     user = User.find_by(:username => params[:username])
+    if !user
+      flash[:notice] = "Doesn't look like that username or password is correct."
+      redirect "/login"
+    end
+
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
       redirect "/dashboard"
