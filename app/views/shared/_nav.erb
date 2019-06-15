@@ -14,30 +14,39 @@
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
       <a class="navbar-item" href="/products">
-        Products
+        Browse
       </a>
 
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          More
-        </a>
-
-        <div class="navbar-dropdown">
-          <a class="navbar-item" href="https://github.com/eyaltoledano/digitalfounder">
-            Contribute
-          </a>
-          <hr class="navbar-divider">
-          <a class="navbar-item">
-            Report an issue
-          </a>
-        </div>
-      </div>
     </div>
 
 
     <div class="navbar-end">
 
       <% if logged_in? %>
+      <span class="navbar-item">
+        <small class="tag is-white"><a href="/users/<%= @user.id %>">Logged in as <strong><%= @user.username %></strong></a></small>
+      </span>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          My products
+        </a>
+
+        <div class="navbar-dropdown">
+          <% @user.products.each do |product| %>
+          <a class="navbar-item" href="/products/<%= product.id %>">
+            <%= product.name %>
+          </a>
+          <% end %>
+
+
+          <hr class="navbar-divider">
+          <a class="navbar-item" href="/products/new">
+            Create a product
+          </a>
+        </div>
+      </div>
+
       <a class="navbar-item" href="/dashboard">
         Dashboard
       </a>

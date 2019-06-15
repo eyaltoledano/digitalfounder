@@ -37,14 +37,16 @@
       <% @user.products.each do |product| %>
       <tr>
         <th><%= product.id %></th>
-        <td><%= product.name %></td>
+        <td><a href="/products/<%= product.id %>">
+          <%= product.name %></a>
+        </td>
         <td><%= product.description %></td>
         <td><%= product.status %></td>
         <td>
           <a href="<%= product.git_repo %>"><%= product.git_repo %></a>
         </td>
-        <td><%= product.created_at %></td>
-        <td><%= product.updated_at %></td>
+        <td><%= product.created_at.strftime("%B %-d, %Y") %></td>
+        <td><%= product.updated_at.strftime("%B %-d, %Y, %H:%M") %></td>
       </tr>
       <% end %>
     </tbody>

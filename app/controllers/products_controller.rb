@@ -3,6 +3,8 @@ class ProductsController < ApplicationController
   # GET: /products
 
   get "/products" do
+    @user = User.find(session[:user_id])
+    @products = Product.all
     erb :"/products/index.html"
   end
 

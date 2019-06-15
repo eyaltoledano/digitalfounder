@@ -1,2 +1,43 @@
+<div class="container">
+  <h1 class="title">
+    All Products on Digital Founder
+  </h1>
 
-<h1>This is the Model's index page.</h1>
+  <div class="container" id="products-index-products-table">
+
+    <table class="table">
+
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Founder</th>
+          <th>Status</th>
+          <th>Repository</th>
+          <th>Founding Date</th>
+          <th>Contributors</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @products.each do |product| %>
+        <tr>
+          <td><%= product.id %></td>
+          <th><a href="/products/<%= product.id %>">
+            <%= product.name %></a>
+          </th>
+          <td><%= product.description %></td>
+          <td><%= product.user.username %></td>
+          <td><%= product.status %></td>
+          <td>
+            <a href="<%= product.git_repo %>"><%= product.git_repo %></a>
+          </td>
+          <td><%= product.created_at.strftime("%B %-d, %Y") %></td>
+          <td><span class="tag is-ight">Coming soon</span></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
