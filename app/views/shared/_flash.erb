@@ -1,5 +1,17 @@
-<div class="flash">
-  <% if flash.has?(:notice) %>
-    <p><strong><%= flash[:notice] %></strong></p>
-  <% end %>
+<% if flash.has?(:notice) %>
+<div class="notification is-danger">
+  <button class="delete"></button>
+  <%= flash[:notice] %>
 </div>
+<% end %>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+      $notification = $delete.parentNode;
+      $delete.addEventListener('click', () => {
+        $notification.parentNode.removeChild($notification);
+      });
+    });
+  });
+</script>

@@ -10,6 +10,52 @@ class UsersController < ApplicationController
     erb :"/users/new.html"
   end
 
+  post "/signup" do
+    if params[:username] == "" || params[:email] == "" || params[:password] == ""
+      flash[:notice] = "Looks like something's not quite right with what you submitted. Try again."
+      redirect '/signup'
+    else
+      @user = User.create(:username => params[:username], :email => params[:email], :password => params[:password])
+      session[:user_id] = @user.id
+      redirect '/dashboard'
+    end
+  end
+
+  get "/dashboard" do
+    if logged_in?
+      @user = User.find(session[:user_id])
+    else
+      redirect '/login'
+      flash[:notice] = "You need to be logged in to access this page."
+    end
+    erb :"/users/dashboard.html"
+  end
+
+  get '/login' do
+    if !logged_in?
+      flash[:notice] = "You need to be logged in to access this page."
+      erb :"/users/login.html"
+    else
+      redirect '/dashboard'
+    end
+  end
+
+  post '/login' do
+    user = User.find_by(:username => params[:username])
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      redirect "/dashboard"
+    else
+      flash[:notice] = "Something went wrong. Try again?"
+      redirect to '/login'
+    end
+  end
+
+  get '/logout' do
+    session.clear
+    redirect "/"
+  end
+
   # POST: /users
   post "/users" do
     redirect "/users"

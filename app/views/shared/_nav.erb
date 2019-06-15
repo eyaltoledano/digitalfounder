@@ -34,20 +34,34 @@
       </div>
     </div>
 
+
     <div class="navbar-end">
-      <a class="navbar-item">
+
+      <% if logged_in? %>
+      <a class="navbar-item" href="/dashboard">
         Dashboard
       </a>
-
+      <div class="navbar-item">
+        <a class="button is-info is-inverted" href="/logout">
+          <strong>Logout</strong>
+        </a>
+      </div>
+      <% else %>
       <a class="navbar-item" href="/signup">
         Signup
       </a>
-
       <div class="navbar-item">
         <a class="button is-info is-inverted" href="/login">
           <strong>Login</strong>
         </a>
       </div>
+      <% end %>
+
+
+
+
+
+
 
     </div>
   </div>
