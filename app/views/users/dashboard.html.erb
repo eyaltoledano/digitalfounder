@@ -1,17 +1,37 @@
 <section class="hero is-dark is-bold" id="dashboard_hero">
   <div class="hero-body">
     <div class="container">
-      <h1 class="title">
-        <%= @greeting %>, <%= @user.username %>
-      </h1>
-      <h2 class="subtitle">
-        <% if @owned_products == 0 %>
-          You don't have any products to work on yet.
-          <a href="/products/new" class="button is-small is-primary is-outlined">Create your first product</a>
-        <% else %>
-          You have <%= @owned_products %> products to work on.
-        <% end %>
-      </h2>
+      <div class="columns">
+        <div class="column is-three-quarters">
+          <h1 class="title">
+            <%= @greeting %>, <%= @user.username %>
+          </h1>
+          <h2 class="subtitle">
+            <% if @owned_products == 0 %>
+              You don't have any products to work on yet.
+              <a href="/products/new" class="button is-small is-primary is-outlined">Create your first product</a>
+            <% else %>
+              You have <%= @owned_products %> products to work on.
+            <% end %>
+          </h2>
+        </div>
+        <div class="column">
+          <span class="level is-centered">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Account Balance</p>
+                <p class="title">$<%= sprintf "%.2f", @user.balance %></p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Ready to Withdraw</p>
+                <p class="title"><span class="tag is-light">Coming soon</span></p>
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
