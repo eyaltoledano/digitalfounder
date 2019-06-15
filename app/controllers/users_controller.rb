@@ -24,6 +24,15 @@ class UsersController < ApplicationController
   get "/dashboard" do
     if logged_in?
       @user = User.find(session[:user_id])
+      time = Time.now.hour
+      if time > 10 && time < 12 || time == 0
+        @greeting = "Good morning"
+      elsif time > 12 && time < 18
+        @greeting = "Good afternoon"
+      elsif time > 18 && time < 24
+        @greeting = "Good evening"
+      end
+      @owned_products = @user.products.count
     else
       redirect '/login'
       flash[:notice] = "You need to be logged in to access this page."

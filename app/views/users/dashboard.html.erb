@@ -1,3 +1,48 @@
-<h1 class="title">
-  <%= @user.username %>'s Dashboard
-</h1>
+<section class="hero is-dark is-bold">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        <%= @greeting %>, <%= @user.username %>
+      </h1>
+      <h2 class="subtitle">
+        <% if @owned_products == 0 %>
+          You don't have any products to work on yet.
+          <a href="/products/new" class="button is-small is-primary is-outlined">Create your first product</a>
+        <% else %>
+          You have <%= @owned_products %> products to work on.
+        <% end %>
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <h2 class="title">Your Products</h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Repository</th>
+        <th>Status</th>
+        <th>Created at</th>
+        <th>Last update</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @user.products.each do |product| %>
+      <tr>
+        <th><%= product.id %></th>
+        <td><%= product.name %></td>
+        <td><%= product.description %></td>
+        <td><%= product.status %></td>
+        <td><%= product.created_at %></td>
+        <td><%= product.updated_at %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

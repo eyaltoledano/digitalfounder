@@ -1,1 +1,12 @@
-<h1>This is the show page for an individual instance of your model.</h1>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <%= erb :"/shared/_dashboard_nav" %>
+      
+      <h1 class="title"><%= @product.name %></h1>
+      <h2 class="subtitle">
+        by <%= @product.user.username %>
+      </h2>
+    </div>
+  </div>
+</section>

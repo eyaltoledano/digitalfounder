@@ -19,8 +19,20 @@ class ApplicationController < Sinatra::Base
     User.find(session[:user_id])
   end
 
+  def current_url
+    "http://#{request.host}:#{request.port}#{request.path}"
+  end
+
+  def requested_product_id
+    request.path.split("/").last
+  end
+
   get "/" do
-    erb :index
+    if logged_in?
+      redirect '/dashboard'
+    else
+      erb :index
+    end
   end
 
 

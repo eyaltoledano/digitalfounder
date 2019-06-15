@@ -1,0 +1,15 @@
+<nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+  <ul>
+    <% if @product %>
+      <li <% if requested_product_id == @product.id %>class="is-active"<% end %>>
+        <a href="/products/<%= @product.id %>">
+          <%= @product.name %>
+        </a>
+      </li>
+    <% end %>
+
+    <% if current_url.include?("/tasks/") %>
+      <li><a href="#">Task 123</a></li>
+    <% end %>
+  </ul>
+</nav>
