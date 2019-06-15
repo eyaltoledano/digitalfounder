@@ -1,12 +1,94 @@
-<section class="hero">
+<section class="hero is-info" id="dashboard_hero">
+
   <div class="hero-body">
     <div class="container">
-      <%= erb :"/shared/_dashboard_nav" %>
-      
-      <h1 class="title"><%= @product.name %></h1>
-      <h2 class="subtitle">
-        by <%= @product.user.username %>
-      </h2>
+      <div class="columns">
+        <div class="column is-two-thirds">
+          <h1 class="title">
+            <%= @product.name %>
+          </h1>
+
+          <div class="content is-medium">
+            <p><%= @product.description %></p>
+          </div>
+
+          <div id="product-founding-info">
+            <div class="field is-grouped is-grouped-multiline is-centered">
+              <div class="control">
+                <div class="tags has-addons">
+                  <span class="tag is-dark">founded by</span>
+                  <span class="tag is-light">
+                    <a href="/users/<%= @product.user.id %>">
+                      <%= @product.user.username %>
+                    </a>
+                  </span>
+                </div>
+              </div>
+              <div class="control">
+                <div class="tags has-addons">
+                  <span class="tag is-dark">founded on</span>
+                  <span class="tag is-light">
+                    <%= @product.created_at.strftime("%B %-d, %Y") %>
+                  </span>
+                </div>
+              </div>
+              <div class="control">
+                <a href="<%= "http://@product.git_repo" %>">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="column">
+          <div id="product-info">
+            <br>
+            <span class="level is-centered">
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Current Version</p>
+                  <% if @versions.empty? %>
+                    <p class="title">N/A</p>
+                  <% else %>
+                    <p class="title">
+                      <a class="tag is-white is-large" id="product-current-version" href="/products/<%=@product.id%>/versions/<%=@versions.last.id %>">
+                        <%= @versions.last.name %>
+                      </a>
+                    </p>
+                  <% end %>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Available Tasks</p>
+                  <p class="title"><span class="tag is-warning">placeholder</span></p>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<% if @product.versions.empty? %>
+
+<section class="container has-text-centered">
+  <div id="versions-empty-state" class="columns is-vcentered">
+    <div class="column">
+      <h1 class="title">
+        Congratulations on creating your product, <%= @product.user.username %>! &#127881;
+      </h1>
+      <h2 class="subtitle">
+        It's time to start planning your first release.
+      </h2>
+      <a class="button is-info is-outlined is-medium" href="/products/<%@product.id%>/versions/new">Start planning v1</a>
+    </div>
+  </div>
+</section>
+
+<% else %>
+
+<% end %>

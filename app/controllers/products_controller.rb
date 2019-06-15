@@ -38,6 +38,7 @@ class ProductsController < ApplicationController
   get "/products/:id" do
     @product = Product.find(params[:id])
     @user = @product.user
+    @versions = @product.versions
     erb :"/products/show.html"
   end
 

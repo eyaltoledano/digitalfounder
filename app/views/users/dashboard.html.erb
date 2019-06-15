@@ -48,7 +48,7 @@
         <th>Description</th>
         <th>Status</th>
         <th>Repository</th>
-        <th>Created at</th>
+        <th>Current Version</th>
         <th>Last update</th>
       </tr>
     </thead>
@@ -65,7 +65,15 @@
         <td>
           <a href="<%= product.git_repo %>"><%= product.git_repo %></a>
         </td>
-        <td><%= product.created_at.strftime("%B %-d, %Y") %></td>
+        <td>
+          <% if product.versions.empty? %>
+          <a class="button is-primary" href="/versions/new">new version</a>
+          <% else %>
+          <a href="/products/<%=product.id%>/versions/<%=product.versions.last.id%>">
+            <%= product.versions.last.name %>
+          </a>
+          <% end %>
+        </td>
         <td><%= product.updated_at.strftime("%B %-d, %Y, %H:%M") %></td>
       </tr>
       <% end %>

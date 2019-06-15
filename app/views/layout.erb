@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/stylesheets/main.css" />
   </head>
   <body>
-    <section>
+    <div class="content">
       <nav>
         <%= erb :"shared/_nav" %><br>
       </nav>
@@ -25,9 +25,12 @@
           <%= yield %>
 
       </div>
-    </section>
+    </div>
 
-    <%= erb :"shared/_footer" %>
+    <footer class="footer">
+      <%= erb :"shared/_footer" %>
+    </footer>
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <!--[if lt IE 7]>
       <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>

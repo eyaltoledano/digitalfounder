@@ -13,8 +13,8 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item" href="/products">
-        Browse
+      <a class="navbar-item <% if request.path == "/products" %>is-active<% end %>" href="/products">
+        Browse Projects
       </a>
 
     </div>
@@ -24,7 +24,7 @@
 
       <% if logged_in? %>
       <span class="navbar-item">
-        <small class="tag is-white"><a href="/users/<%= @user.id %>">Logged in as <strong><%= @user.username %></strong></a></small>
+        <small class="tag is-white"><a href="/users/<%= @user.id %>"><i class="fas fa-check"></i> Logged in as <strong><%= @user.username %></strong></a></small>
       </span>
 
       <div class="navbar-item has-dropdown is-hoverable">
@@ -47,9 +47,10 @@
         </div>
       </div>
 
-      <a class="navbar-item" href="/dashboard">
+      <a class="navbar-item <% if current_url.include?("dashboard") %>is-active<% end %>" href="/dashboard">
         Dashboard
       </a>
+
       <div class="navbar-item">
         <a class="button is-info is-inverted" href="/logout">
           <strong>Logout</strong>

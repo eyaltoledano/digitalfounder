@@ -1,1 +1,50 @@
-<h1>This is the show page for an individual instance of your model.</h1>
+<section class="hero is-info is-bold" id="dashboard_hero">
+
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-two-thirds">
+          <h1 class="title">
+            <%= @task.name %>
+          </h1>
+          <h2 class="subtitle">
+            by <%= @task.user.username %>
+          </h2>
+          <div class="content is-medium">
+            <p>Reward: <%= @task.reward %></p>
+          </div>
+        </div>
+        <div class="column">
+          <span class="level is-centered">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Claim this task</p>
+                <p class="title is-light">
+                  <a href="#" class="button">Claim</a>
+                </p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Open Tasks</p>
+                <p class="title"><span class="tag is-warning">placeholder</span></p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Completed Tasks</p>
+                <p class="title"><span class="tag is-warning">placeholder</span></p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Total Tasks</p>
+                <p class="title"><span class="tag is-warning">placeholder</span></p>
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
