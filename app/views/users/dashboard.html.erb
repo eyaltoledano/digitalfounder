@@ -18,15 +18,16 @@
 
 <section class="container">
   <h2 class="title">Your Products</h2>
-
+  <a href="/products/new" class="button is-small">New product</a>
   <table class="table">
+
     <thead>
       <tr>
         <th>ID</th>
         <th>Name</th>
         <th>Description</th>
-        <th>Repository</th>
         <th>Status</th>
+        <th>Repository</th>
         <th>Created at</th>
         <th>Last update</th>
       </tr>
@@ -39,6 +40,7 @@
         <td><%= product.name %></td>
         <td><%= product.description %></td>
         <td><%= product.status %></td>
+        <td><%= product.git_repo %></td>
         <td><%= product.created_at %></td>
         <td><%= product.updated_at %></td>
       </tr>
