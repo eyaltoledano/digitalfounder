@@ -70,22 +70,43 @@ class UsersController < ApplicationController
     redirect "/"
   end
 
+  # GET: /users/5/edit
+  get "/settings" do
+    if logged_in?
+      @user = User.find(session[:user_id])
+      @products = @user.products
+
+      erb :"/users/edit.html"
+    else
+      flash[:notice] = "You need to be logged in to access this page."
+      redirect '/login'
+    end
+  end
+
   # GET: /users/5
   get "/users/:slug" do
     @user = User.find(session[:user_id])
     erb :"/users/show.html"
   end
 
-  # GET: /users/5/edit
-  get "/settings" do
-    @user = User.find(session[:user_id])
-    @products = @user.products
-    erb :"/users/edit.html"
-  end
-
   # PATCH: /users/5
-  patch "/users/:id" do
-    redirect "/users/:id"
+  patch "/users/:id/edit" do
+    binding.pry
+    @user = User.find(params[:id])
+    @products = @user.products
+
+    if params[:name].empty? || params[:email].empty? || params[:password].empty?
+       flash[:notice] = "Can't leave any fields empty. Mind filling those in?"
+      redirect "/settings"
+    else
+      if @user.update(name: params[:name], email: params[:email], password: params[:password])
+        flash[:notice] = "#{@user.username}'s profile was successfully edited."
+        redirect "/settings"
+      else
+        flash[:notice] = "Something went wrong. Try again?"
+        redirect "/settings"
+      end
+    end
   end
 
   # DELETE: /users/5/delete

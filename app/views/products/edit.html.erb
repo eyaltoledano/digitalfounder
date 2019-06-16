@@ -1,1 +1,60 @@
-<h1>Insert the form to edit an instance of your model here.</h1>
+<div class="container">
+  <div class="columns">
+    <div class="column is-one-fifth">
+      <%= erb :"/shared/_settings_menu" %>
+    </div>
+    <div class="column">
+
+      <h1 class="title has-text-centered">Editing <%=@product.name%> by <%= @product.user.username %></h1>
+
+      <div class="column is-half is-offset-one-quarter">
+        <form class="form" id="edit-profile" action="/products/<%=@product.id%>" method="post">
+            <input type="hidden" name="_method" value="PATCH">
+            <div class="field">
+              <div class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-pen"></i>
+                </span>
+                <input class="input" type="text" name="name" placeholder="Give your product a better name" value="<%=@product.name%>">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-comment-dollar"></i>
+                </span>
+                <input class="input" type="text" name="description" placeholder="What's the new elevator pitch?" value="<%= @product.description %>">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fab fa-github"></i>
+                </span>
+                <input class="input" type="text" name="git_repo" placeholder="Enter the project's GitHub repository URL" value="<%= @product.git_repo %>">
+                <a class="help is-pulled-right" href="https://github.com/new" target="_blank"><i class="fab fa-github"></i> Create a new repository</a>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control has-text-centered">
+                <input class="button is-link is-medium is-outlined" type="submit" id="submit-edit" value="Update product">
+              </div>
+            </div>
+
+        </form>
+        <div class="has-text-centered">
+          <hr>
+          <p><small><strong class="has-text-danger">&#9888; danger zone &#9888;</strong></small></p>
+          <a class="button is-danger is-small" href="#">Delete <%= @product.name %></a>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -46,14 +46,28 @@ class ProductsController < ApplicationController
   get "/products/:slug/edit" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
+    @products = @user.products
     erb :"/products/edit.html"
   end
 
   # PATCH: /products/5
-  patch "/products/:slug" do
-    @product = Product.find_by_slug(params[:slug])
+  patch "/products/:id" do
+    @product = Product.find(params[:id])
     @user = @product.user
-    redirect "/:slug"
+    if params[:name].empty? || params[:description].empty? || params[:git_repo].empty?
+       flash[:notice] = "Can't leave any fields empty. Mind filling those in?"
+      redirect "/products/#{@product.slug}/edit"
+    else
+      if @product.update(name: params[:name], description: params[:description], git_repo: params[:git_repo])
+        flash[:notice] = "#{@product.name}'s profile was successfully edited."
+        redirect "/products/#{@product.slug}/edit"
+      else
+        flash[:notice] = "Something went wrong. Try again?"
+        redirect "/products/#{@product.slug}/edit"
+      end
+    end
+
+    redirect "/products/#{@product.slug}/edit"
   end
 
   # DELETE: /products/5/delete

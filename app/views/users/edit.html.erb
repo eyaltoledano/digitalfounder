@@ -1,42 +1,54 @@
-<h1 class="title has-text-centered">Editing <%=@user.username%>'s Digital Founder profile</h1>
+<div class="container">
+  <div class="columns">
+    <div class="column is-one-fifth">
+      <%= erb :"/shared/_settings_menu" %>
+    </div>
+    <div class="column">
 
-<div class="column is-half is-offset-one-quarter">
-  <form class="form" id="signup" action="/users/<%=@user.id%>" method="post">
-      <input type="hidden" name="_method" value="patch">
-      <div class="field">
-        <div class="control has-icons-left">
-          <span class="icon is-small is-left">
-            <i class="fas fa-user"></i>
-          </span>
-          <input class="input" type="text" name="username" value="<%=@user.username%>">
-        </div>
+      <h1 class="title has-text-centered">Editing <%=@user.username%>'s Digital Founder profile</h1>
+
+      <div class="column is-half is-offset-one-quarter">
+        <form class="form" id="edit-profile" action="/users/<%=@user.id%>/edit" method="post">
+            <input type="hidden" name="_method" value="PATCH">
+            <div class="field">
+              <div class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user"></i>
+                </span>
+                <input class="input" type="text" name="username" value="<%=@user.username%>">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-envelope"></i>
+                </span>
+                <input class="input" type="email" name="email" value="<%=@user.email%>">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-lock"></i>
+                </span>
+                <input class="input" type="password" name="password" value="<%=@user.password_digest%>">
+              </div>
+            </div>
+
+            <br>
+            <div class="field">
+              <div class="control has-text-centered">
+                <input class="button is-link is-medium is-outlined" type="submit" id="submit-edit" value="Update profile">
+              </div>
+            </div>
+
+        </form>
       </div>
 
-      <div class="field">
-        <div class="control has-icons-left">
-          <span class="icon is-small is-left">
-            <i class="fas fa-envelope"></i>
-          </span>
-          <input class="input" type="email" name="email" value="<%=@user.email%>">
-        </div>
-      </div>
+    </div>
 
-      <div class="field">
-        <div class="control has-icons-left">
-          <span class="icon is-small is-left">
-            <i class="fas fa-lock"></i>
-          </span>
-          <input class="input" type="password" name="password" value="<%=@user.password_digest%>">
-        </div>
-      </div>
-
-      <br>
-      <div class="field">
-        <div class="control has-text-centered">
-          <input class="button is-link is-medium is-outlined" type="submit" id="submit-signup" value="Update profile">
-        </div>
-      </div>
-
-  </form>
+  </div>
 
 </div>
