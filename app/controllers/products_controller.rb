@@ -30,12 +30,12 @@ class ProductsController < ApplicationController
       @product.user = @user
       @product.status = "New"
       @product.save
-      redirect "/#{@product.slug}"
+      redirect "/products/#{@product.slug}"
     end
   end
 
   # GET: /products/5
-  get "/:slug" do
+  get "/products/:slug" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
     @versions = @product.versions
@@ -43,21 +43,21 @@ class ProductsController < ApplicationController
   end
 
   # GET: /products/5/edit
-  get "/:slug/edit" do
+  get "/products/:slug/edit" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
     erb :"/products/edit.html"
   end
 
   # PATCH: /products/5
-  patch "/:slug" do
+  patch "/products/:slug" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
     redirect "/:slug"
   end
 
   # DELETE: /products/5/delete
-  delete "/:slug/delete" do
+  delete "/products/:slug/delete" do
     @product = Product.find_by_slug(params[:slug])
     @product.destroy
     redirect "/dashboard"

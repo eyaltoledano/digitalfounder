@@ -57,7 +57,7 @@
       <% @user.products.each do |product| %>
       <tr>
         <th><%= product.id %></th>
-        <td><a href="/products/<%= product.id %>">
+        <td><a href="/products/<%= product.slug %>">
           <%= product.name %></a>
         </td>
         <td><%= product.description %></td>
@@ -67,10 +67,10 @@
         </td>
         <td>
           <% if product.versions.empty? %>
-          <a class="button is-primary" href="/versions/new">new version</a>
+          <a class="button is-primary" href="/products<%=product.slug%>/new_version">new version</a>
           <% else %>
-          <a href="/products/<%=product.id%>/versions/<%=product.versions.last.id%>">
-            <%= product.versions.last.name %>
+          <a href="/products/<%=product.slug%>/versions/v<%=product.versions.last.id%>">
+            <%= product.versions.last.version_number %>
           </a>
           <% end %>
         </td>

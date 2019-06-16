@@ -34,7 +34,7 @@
 
         <div class="navbar-dropdown">
           <% @user.products.each do |product| %>
-          <a class="navbar-item <% if request.path == "/#{product.slug}" %> is-active <% end %> " href="/<%= product.slug %>">
+          <a class="navbar-item <% if request.path == "/products/#{product.slug}" %> is-active <% end %> " href="/products/<%= product.slug %>">
             <%= product.name %>
 
           </a>

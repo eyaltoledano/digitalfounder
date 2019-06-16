@@ -1,12 +1,14 @@
 class VersionsController < ApplicationController
 
   # GET: /versions
-  get "/versions" do
+  get "/products/:slug/versions" do
+    @product = Product.find_by_slug(params[:slug])
+    @user = @product.user
     erb :"/versions/index.html"
   end
 
   # GET: /versions/new
-  get "/:slug/new_version" do
+  get "/products/:slug/new_version" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
 
@@ -14,12 +16,12 @@ class VersionsController < ApplicationController
       erb :"/versions/new.html"
     else
       flash[:notice] = "Only the owner of #{@product.name} can create new versions."
-      redirect "/#{@product.slug}"
+      redirect "/products/#{@product.slug}"
     end
   end
 
   # POST: /version-s
-  post "/:slug/new_version" do
+  post "/products/:slug/new_version" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
     # when a new version is created, add the current user to version.users
@@ -27,7 +29,7 @@ class VersionsController < ApplicationController
 
     if params[:description] == "" || params[:release_date] == "" || params[:version_number] == ""
       flash[:notice] = "Looks like something's not quite right with what you submitted. Try again."
-      redirect "/#{@product}/new_version"
+      redirect "/products/#{@product}/new_version"
     else
       @version = Version.create(description: params[:description], release_date: params[:release_date], version_number: params[:version_number])
       @version.product = @product
@@ -36,12 +38,12 @@ class VersionsController < ApplicationController
       @version.progress = "0"
       @version.save
       flash[:notice] = "#{@product.name} #{@version.version_number} was successfully created!"
-      redirect "/#{@product.slug}/versions/#{@version.version_number}"
+      redirect "/products/#{@product.slug}/versions/#{@version.version_number}"
     end
   end
 
   # GET: /versions/5
-  get "/:slug/versions/:version_number" do
+  get "/products/:slug/versions/:version_number" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
     @version = @product.versions.find_by_version_number(params[:version_number])
@@ -49,17 +51,25 @@ class VersionsController < ApplicationController
   end
 
   # GET: /versions/5/edit
-  get "/versions/:id/edit" do
+  get "products/:slug/versions/:id/edit" do
+    @product = Product.find_by_slug(params[:slug])
+    @user = @product.user
+    @version = Version.find(params[:id])
     erb :"/versions/edit.html"
   end
 
   # PATCH: /versions/5
-  patch "/versions/:id" do
+  patch "products/:slug/versions/:id" do
+    @product = Product.find_by_slug(params[:slug])
+    @user = @product.user
+    @version = Version.find(params[:id])
     redirect "/versions/:id"
   end
 
   # DELETE: /versions/5/delete
-  delete "/versions/:id/delete" do
+  delete "products/:slug/versions/:id/delete" do
+    @version = Version.find(params[:id])
+    @version.destroy
     redirect "/versions"
   end
 end

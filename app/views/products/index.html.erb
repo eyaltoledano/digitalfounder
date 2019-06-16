@@ -24,7 +24,7 @@
         <% @products.each do |product| %>
         <tr>
           <td><%= product.id %></td>
-          <th><a href="/<%= product.slug %>">
+          <th><a href="/products/<%= product.slug %>">
             <%= product.name %></a>
           </th>
           <td><%= product.description %></td>
