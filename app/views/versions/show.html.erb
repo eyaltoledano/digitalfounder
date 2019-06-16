@@ -1,1 +1,113 @@
-<h1>This is the show page for an individual instance of your model.</h1>
+<section class="hero is-dark is-bold" id="dashboard_hero">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-half">
+          <h1 class="title">
+            <%= "#{@product.name} #{@version.version_number}" %>
+          </h1>
+          <p class="subtitle">
+            <%= @version.description %>
+          </p>
+        </div>
+        <div class="column">
+          <span class="level is-centered">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Available Rewards</p>
+                <p class="title">$<%= sprintf "%.2f", @user.balance %></p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Open Tasks</p>
+                <p class="title"><span class="tag is-warning">placeholder</span></p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Version Progress</p>
+                <p class="title"><span class="tag is-warning">placeholder</span></p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Contributors</p>
+                <p class="title"><span class="tag is-warning">placeholder</span></p>
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if @version.tasks.empty? %>
+
+<!-- Start empty state -->
+
+<section class="container has-text-centered">
+  <div id="versions-empty-state" class="columns is-vcentered">
+    <div class="column">
+      <h1 class="title">
+        Congratulations on starting <%= @version.version_number%> of <%= @product.name %>, <%= @product.user.username %>! &#127881;
+      </h1>
+      <h2 class="subtitle">
+        It's time to start adding tasks to <%= @version.version_number%>.
+      </h2>
+      <a class="button is-info is-outlined is-medium" href="/<%= @product.slug %>/versions/<%= @version.version_number %>/new_task">Create a task for <%= @version.version_number%></a>
+    </div>
+  </div>
+</section>
+
+<!-- End empty state -->
+
+<% else %>
+
+<!-- Start versions table -->
+
+<section class="container" id="version-tasks-table-section">
+  <br>
+  <h2 class="title">Tasks</h2>
+  <a href="/<%= @product.slug %>/<%= @version.version_number %>/new_task" class="button is-small">New task</a>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Reward</th>
+        <th>Contributor</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @version.tasks.each do |task| %>
+      <tr>
+        <th><%= task.id %></th>
+        <td><a href="/<%= @product.slug %>/<%= @version.version_number %>/tasks/<%= task.id %>"><%= task.name %></a>
+        </td>
+        <td><%= task.description %></td>
+        <td>$<%= sprintf "%.0f", task.reward %></td>
+        <td>
+          <% if task.user.nil? %>
+          <a class="button is-success is-small" href="#">Claim</a>
+          <% else%>
+          <a href="/users/<%= task.user.username %>">
+            <%= task.user.username %>
+          <% end %>
+          </a>
+        </td>
+        <td><%= task.status %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>
+
+<!-- End versions table -->
+
+<% end %>

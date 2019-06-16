@@ -9,7 +9,7 @@ class ProductsController < ApplicationController
   end
 
   # GET: /products/new
-  get "/new" do
+  get "/new_product" do
     if logged_in?
       @user = User.find(session[:user_id])
       erb :"/products/new.html"

@@ -52,8 +52,8 @@
                     <p class="title">N/A</p>
                   <% else %>
                     <p class="title">
-                      <a class="tag is-white is-large" id="product-current-version" href="/products/<%=@product.id%>/versions/<%=@versions.last.id %>">
-                        <%= @versions.last.name %>
+                      <a class="tag is-white is-large" id="product-current-version" href="/<%=@product.slug%>/versions/<%=@versions.last.version_number %>">
+                        <%= @versions.last.version_number %>
                       </a>
                     </p>
                   <% end %>
@@ -75,6 +75,8 @@
 
 <% if @product.versions.empty? %>
 
+<!-- Start empty state -->
+
 <section class="container has-text-centered">
   <div id="versions-empty-state" class="columns is-vcentered">
     <div class="column">
@@ -84,11 +86,53 @@
       <h2 class="subtitle">
         It's time to start planning your first release.
       </h2>
-      <a class="button is-info is-outlined is-medium" href="/products/<%= @product.id %>/versions/new">Start planning v1</a>
+      <a class="button is-info is-outlined is-medium" href="/<%= @product.slug %>/new_version">Start planning v1</a>
     </div>
   </div>
 </section>
 
+<!-- End empty state -->
+
 <% else %>
+
+<!-- Start versions table -->
+
+<section class="container" id="product-versions-table-section">
+  <br>
+  <h2 class="title"><%= @product.name %> Versions</h2>
+  <a href="/<%= @product.slug%>/new_version" class="button is-small">New version</a>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Version Number</th>
+        <th>Description</th>
+        <th>Progress</th>
+        <th>Release Date</th>
+        <th>Created</th>
+        <th>Last update</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @product.versions.each do |version| %>
+      <tr>
+        <th><%= version.id %></th>
+        <td><a href="/<%=@product.slug%>/versions/<%= version.version_number %>">
+          <%= version.version_number %></a>
+        </td>
+        <td><%= version.description %></td>
+        <td><%= version.progress %>%</td>
+        <td><%= version.release_date %></td>
+        <td><%= version.created_at.strftime("%B %-d, %Y") %></td>
+        <td><%= version.updated_at.strftime("%B %-d, %Y, %H:%M") %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>
+
+<!-- End versions table -->
 
 <% end %>

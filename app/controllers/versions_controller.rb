@@ -6,18 +6,45 @@ class VersionsController < ApplicationController
   end
 
   # GET: /versions/new
-  get "/versions/new" do
-    erb :"/versions/new.html"
+  get "/:slug/new_version" do
+    @product = Product.find_by_slug(params[:slug])
+    @user = @product.user
+
+    if session[:user_id] == @product.user.id
+      erb :"/versions/new.html"
+    else
+      flash[:notice] = "Only the owner of #{@product.name} can create new versions."
+      redirect "/#{@product.slug}"
+    end
   end
 
-  # POST: /versions
-  post "/versions" do
-    # when a new version is created, assign its :version_number to "v1"
-    redirect "/versions"
+  # POST: /version-s
+  post "/:slug/new_version" do
+    @product = Product.find_by_slug(params[:slug])
+    @user = @product.user
+    # when a new version is created, add the current user to version.users
+    # when a new version is created, set its progress to 0
+
+    if params[:description] == "" || params[:release_date] == "" || params[:version_number] == ""
+      flash[:notice] = "Looks like something's not quite right with what you submitted. Try again."
+      redirect "/#{@product}/new_version"
+    else
+      @version = Version.create(description: params[:description], release_date: params[:release_date], version_number: params[:version_number])
+      @version.product = @product
+      @version.user = @user
+      @version.version_number = "v#{@product.versions.count}"
+      @version.progress = "0"
+      @version.save
+      flash[:notice] = "#{@product.name} #{@version.version_number} was successfully created!"
+      redirect "/#{@product.slug}/versions/#{@version.version_number}"
+    end
   end
 
   # GET: /versions/5
-  get "/versions/:id" do
+  get "/:slug/versions/:version_number" do
+    @product = Product.find_by_slug(params[:slug])
+    @user = @product.user
+    @version = @product.versions.find_by_version_number(params[:version_number])
     erb :"/versions/show.html"
   end
 

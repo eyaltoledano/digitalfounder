@@ -1,1 +1,41 @@
-<h1>Insert the form to create a new instance of your model.</h1>
+<h1 class="title has-text-centered"><%= @user.username%> is creating v<%=@product.versions.count + 1%> of <%=@product.name%>! &#127894;</h1>
+
+<div class="column is-half is-offset-one-quarter">
+  <form class="form" id="new_version" action="/<%=@product.slug%>/new_version" method="post">
+
+      <div class="field medium">
+        <div class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-comment-dollar"></i>
+          </span>
+          <textarea class="input textarea" type="text" name="description" placeholder="Describe the new features and benefits of <%=@product.name%> v<%=@product.versions.count + 1%>"></textarea>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-calendar-check"></i>
+          </span>
+          <input class="input" type="text" name="release_date" placeholder="Enter the expected release date for v<%=@product.versions.count + 1%> (i.e. January 1, 2020)">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-code-branch"></i>
+          </span>
+          <input class="input" type="text" name="version_number" value="v<%=@product.versions.count + 1%>" disabled>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control has-text-centered">
+          <input class="button is-link is-medium is-outlined" type="submit" value="Create v<%=@product.versions.count + 1%> of <%=@product.name%>">
+        </div>
+      </div>
+
+  </form>
+
+</div>
