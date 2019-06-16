@@ -36,7 +36,7 @@ class TasksController < ApplicationController
       @task.status = "Open"
       @task.save
       flash[:notice] = "The task was successfully created."
-      redirect "/#{@product.slug}/#{@version.version_number}"
+      redirect "/products/#{@product.slug}/versions/#{@version.version_number}"
     end
   end
 
