@@ -47,6 +47,7 @@ class VersionsController < ApplicationController
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
     @version = @product.versions.find_by_version_number(params[:version_number])
+    @open_tasks = @version.tasks.where(:status == "Open")
     erb :"/versions/show.html"
   end
 

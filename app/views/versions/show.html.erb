@@ -21,7 +21,7 @@
             <div class="level-item has-text-centered">
               <div>
                 <p class="heading">Open Tasks</p>
-                <p class="title"><span class="tag is-warning">placeholder</span></p>
+                <p class="title"><%= @open_tasks.count %></p>
               </div>
             </div>
             <div class="level-item has-text-centered">
@@ -56,7 +56,11 @@
       <h2 class="subtitle">
         It's time to start adding tasks to <%= @version.version_number%>.
       </h2>
+      <a data-target="#taskModal" aria-haspopup="true" id="open-modal" class="button is-info is-outlined is-medium modal-button">New task</a>
+
+      <!-- Route to new task page -
       <a class="button is-info is-outlined is-medium" href="/<%= @product.slug %>/versions/<%= @version.version_number %>/new_task">Create a task for <%= @version.version_number%></a>
+      -->
     </div>
   </div>
 </section>
@@ -70,7 +74,7 @@
 <section class="container" id="version-tasks-table-section">
   <br>
   <h2 class="title">Tasks</h2>
-  <a href="/<%= @product.slug %>/<%= @version.version_number %>/new_task" class="button is-small">New task</a>
+  <a data-target="#taskModal" aria-haspopup="true" id="open-modal" class="button is-small modal-button">New task</a>
 
   <table class="table">
     <thead>
@@ -111,3 +115,93 @@
 <!-- End versions table -->
 
 <% end %>
+
+<!-- Start new task modal -->
+
+<div class="modal" id="taskModal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Create a new task for <%= @product.name%> <%= @version.version_number %></p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="container has-text-centered">
+        <form class="form" id="new_task" action="/products/<%=@product.slug%>/versions/<%=@version.version_number%>/new_task" method="post">
+
+            <div class="field">
+              <div class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-pen"></i>
+                </span>
+                <input class="input" type="text" name="name" placeholder="Give your task a name">
+              </div>
+            </div>
+
+            <div class="field medium">
+              <div class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-tasks"></i>
+                </span>
+                <textarea class="input textarea" type="text" name="description" placeholder="Describe the new task in as much detail as you can." %></textarea>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-dollar-sign"></i>
+                </span>
+                <input class="input" type="text" name="reward" placeholder="What are you willing to pay to get this task completed? (USD)">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-code-branch"></i>
+                </span>
+                <input class="input" type="text" value="<%=@version.version_number%>" disabled>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-rocket"></i>
+                </span>
+                <input class="input" type="text" value="<%=@product.name%>" disabled>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control ">
+                <p><span class="icon is-small">
+                  <i class="fas fa-question-circle"></i>
+                </span> Have questions? <a href="mailto:<%= @product.user.email%>">Get in touch with <%= @product.user.username %></a></p>
+              </div>
+            </div>
+        </form>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <input class="button is-success is-medium is-outlined has-text-centered" type="submit" id="submit-signup" value="Create task">
+    </footer>
+  </div>
+</div>
+
+<script type="text/javascript">
+  document.querySelectorAll('.modal-button').forEach(function(el) {
+  el.addEventListener('click', function() {
+    var target = document.querySelector(el.getAttribute('data-target'));
+
+    target.classList.add('is-active');
+
+    target.querySelector('.delete').addEventListener('click',   function() {
+        target.classList.remove('is-active');
+     });
+  });
+});
+</script>
+
+<!-- End new task modal -->

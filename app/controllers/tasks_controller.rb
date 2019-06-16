@@ -11,7 +11,6 @@ class TasksController < ApplicationController
   get "/products/:slug/versions/:version_number/new_task" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
-    @version_number = Version.find_by_version_number(params[:version_number])
 
     if session[:user_id] == @product.user.id
       erb :"/tasks/new.html"
@@ -22,8 +21,23 @@ class TasksController < ApplicationController
   end
 
   # POST: /tasks
-  post "/tasks" do
-    redirect "/tasks"
+  post "/products/:slug/versions/:version_number/new_task" do
+    @product = Product.find_by_slug(params[:slug])
+    @user = @product.user
+    @version = Version.find_by_version_number(params[:version_number])
+
+    if params[:name] == "" || params[:description] == "" || params[:reward] == ""
+      flash[:notice] = "The task you tried to submit is missing some information. Try again."
+      redirect "/#{@product.slug}/#{@version.version_number}"
+    else
+      @task = Task.create(:name => params[:name], :description => params[:description], :reward => params[:reward])
+      @task.version = @version
+      @task.product = @product
+      @task.status = "Open"
+      @task.save
+      flash[:notice] = "The task was successfully created."
+      redirect "/#{@product.slug}/#{@version.version_number}"
+    end
   end
 
   # GET: /tasks/5
