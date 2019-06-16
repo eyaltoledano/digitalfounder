@@ -27,6 +27,10 @@
         <small class="tag is-white"><a href="/users/<%= @user.slug %>"><i class="fas fa-check"></i> Logged in as <strong><%= @user.username %></strong></a></small>
       </span>
 
+      <a class="navbar-item <% if current_url.include?("settings") %>is-active<% end %>" href="/settings">
+        Account Settings
+      </a>
+
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
           My products

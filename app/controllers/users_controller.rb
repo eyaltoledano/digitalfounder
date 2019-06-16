@@ -77,7 +77,9 @@ class UsersController < ApplicationController
   end
 
   # GET: /users/5/edit
-  get "/users/:id/edit" do
+  get "/settings" do
+    @user = User.find(session[:user_id])
+    @products = @user.products
     erb :"/users/edit.html"
   end
 
