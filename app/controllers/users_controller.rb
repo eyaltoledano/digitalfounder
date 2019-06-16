@@ -91,15 +91,14 @@ class UsersController < ApplicationController
 
   # PATCH: /users/5
   patch "/users/:id/edit" do
-    binding.pry
     @user = User.find(params[:id])
     @products = @user.products
 
-    if params[:name].empty? || params[:email].empty? || params[:password].empty?
+    if params[:username].empty? || params[:email].empty? || params[:password].empty?
        flash[:notice] = "Can't leave any fields empty. Mind filling those in?"
       redirect "/settings"
     else
-      if @user.update(name: params[:name], email: params[:email], password: params[:password])
+      if @user.update(username: params[:username], email: params[:email], password: params[:password])
         flash[:notice] = "#{@user.username}'s profile was successfully edited."
         redirect "/settings"
       else
