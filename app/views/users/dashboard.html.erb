@@ -1,10 +1,10 @@
-<section class="hero is-dark is-bold" id="dashboard_hero">
+<section class="hero is-light is-medium is-bold" id="dashboard_hero">
   <div class="hero-body">
     <div class="container">
       <div class="columns">
         <div class="column is-three-quarters">
           <h1 class="title">
-            <%= @greeting %>, <%= @user.username %>
+            <%= @greeting %>, <%= @user.username + " &#128075;" %>
           </h1>
           <h2 class="subtitle">
             <% if @owned_products == 0 %>
