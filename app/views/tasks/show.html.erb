@@ -1,4 +1,4 @@
-<section class="hero is-info is-bold" id="dashboard_hero">
+<section class="hero is-link is-bold" id="dashboard_hero">
 
   <div class="hero-body">
     <div class="container">
@@ -7,9 +7,9 @@
           <h1 class="title">
             <%= @task.name %>
           </h1>
-          <h2 class="subtitle">
-            by <%= @task.user.username %>
-          </h2>
+          <p class="subtitle is-tag is-white">
+            A task from <a href="/products/<%= @task.version.product.slug %>/versions/<%= @task.version.version_number%>"><%= "#{@task.version.product.name}  (#{@task.version.version_number})" %></a>
+          </p>
           <div class="content is-medium">
             <p>Reward: <%= @task.reward %></p>
           </div>

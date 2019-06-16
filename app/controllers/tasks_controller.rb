@@ -8,7 +8,7 @@ class TasksController < ApplicationController
   end
 
   # GET: /tasks/new
-  get "/:slug/versions/:version_number/new_task" do
+  get "/products/:slug/versions/:version_number/new_task" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
     @version_number = Version.find_by_version_number(params[:version_number])
@@ -22,27 +22,41 @@ class TasksController < ApplicationController
   end
 
   # POST: /tasks
-  post "/:slug/:version_number/new_task" do
+  post "/tasks" do
     redirect "/tasks"
   end
 
   # GET: /tasks/5
-  get "/:slug/:version_number/tasks/:id" do
+  get "/products/:slug/versions/:version_number/tasks/:id" do
+    @product = Product.find_by_slug(params[:slug])
+    @user = @product.user
+    @version = Version.find_by_version_number(params[:version_number])
+    @task = Task.find(params[:id])
     erb :"/tasks/show.html"
   end
 
   # GET: /tasks/5/edit
-  get "/:slug/:version_number/tasks/:id/edit" do
+  get "/products/:slug/:version_number/tasks/:id/edit" do
+    @product = Product.find_by_slug(params[:slug])
+    @user = @product.user
+    @version = Version.find_by_version_number(params[:version_number])
+    @task = Task.find(params[:id])
+
     erb :"/tasks/edit.html"
   end
 
   # PATCH: /tasks/5
-  patch "/:slug/:version_number/tasks/:id" do
+  patch "/tasks/:id" do
+    @task = Task.find(params[:id])
+
     redirect "/tasks/:id"
   end
 
   # DELETE: /tasks/5/delete
-  delete "/:slug/:version_number/tasks/:id/delete" do
+  delete "/tasks/:id/delete" do
+    @task = Task.find(params[:id])
+    @task.destroy
+    flash[:notice] = "#{task.name} was destroyed."
     redirect "/tasks"
   end
 end
