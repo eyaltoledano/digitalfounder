@@ -24,11 +24,15 @@
         <% @products.each do |product| %>
         <tr>
           <td><%= product.id %></td>
-          <th><a href="/products/<%= product.id %>">
+          <th><a href="/<%= product.slug %>">
             <%= product.name %></a>
           </th>
           <td><%= product.description %></td>
-          <td><%= product.user.username %></td>
+          <td>
+            <a href="/users/<%= product.user.slug %>">
+              <%= product.user.username %>
+            </a>
+          </td>
           <td><%= product.status %></td>
           <td>
             <a href="<%= product.git_repo %>"><%= product.git_repo %></a>

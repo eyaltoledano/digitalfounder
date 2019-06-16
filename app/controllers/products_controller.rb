@@ -9,7 +9,7 @@ class ProductsController < ApplicationController
   end
 
   # GET: /products/new
-  get "/products/new" do
+  get "/new" do
     if logged_in?
       @user = User.find(session[:user_id])
       erb :"/products/new.html"
@@ -30,30 +30,36 @@ class ProductsController < ApplicationController
       @product.user = @user
       @product.status = "New"
       @product.save
-      redirect "/products/#{@product.id}"
+      redirect "/#{@product.slug}"
     end
   end
 
   # GET: /products/5
-  get "/products/:id" do
-    @product = Product.find(params[:id])
+  get "/:slug" do
+    @product = Product.find_by_slug(params[:slug])
     @user = @product.user
     @versions = @product.versions
     erb :"/products/show.html"
   end
 
   # GET: /products/5/edit
-  get "/products/:id/edit" do
+  get "/:slug/edit" do
+    @product = Product.find_by_slug(params[:slug])
+    @user = @product.user
     erb :"/products/edit.html"
   end
 
   # PATCH: /products/5
-  patch "/products/:id" do
-    redirect "/products/:id"
+  patch "/:slug" do
+    @product = Product.find_by_slug(params[:slug])
+    @user = @product.user
+    redirect "/:slug"
   end
 
   # DELETE: /products/5/delete
-  delete "/products/:id/delete" do
-    redirect "/products"
+  delete "/:slug/delete" do
+    @product = Product.find_by_slug(params[:slug])
+    @product.destroy
+    redirect "/dashboard"
   end
 end

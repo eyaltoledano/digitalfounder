@@ -12,6 +12,7 @@ class VersionsController < ApplicationController
 
   # POST: /versions
   post "/versions" do
+    # when a new version is created, assign its :version_number to "v1"
     redirect "/versions"
   end
 

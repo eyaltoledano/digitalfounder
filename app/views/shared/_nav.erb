@@ -24,7 +24,7 @@
 
       <% if logged_in? %>
       <span class="navbar-item">
-        <small class="tag is-white"><a href="/users/<%= @user.id %>"><i class="fas fa-check"></i> Logged in as <strong><%= @user.username %></strong></a></small>
+        <small class="tag is-white"><a href="/users/<%= @user.slug %>"><i class="fas fa-check"></i> Logged in as <strong><%= @user.username %></strong></a></small>
       </span>
 
       <div class="navbar-item has-dropdown is-hoverable">
@@ -34,16 +34,17 @@
 
         <div class="navbar-dropdown">
           <% @user.products.each do |product| %>
-          <a class="navbar-item" href="/products/<%= product.id %>">
+          <a class="navbar-item <% if request.path == "/#{product.slug}" %> is-active <% end %> " href="/<%= product.slug %>">
             <%= product.name %>
+
           </a>
           <% end %>
 
 
           <hr class="navbar-divider">
-          <a class="navbar-item" href="/products/new">
-            Create a product
-          </a>
+          <span class="navbar-item">
+            <a class="button is-primary" href="/products/new">Create a product</a>
+          </span>
         </div>
       </div>
 

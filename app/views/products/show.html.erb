@@ -79,12 +79,12 @@
   <div id="versions-empty-state" class="columns is-vcentered">
     <div class="column">
       <h1 class="title">
-        Congratulations on creating your product, <%= @product.user.username %>! &#127881;
+        Congratulations on creating <%= @product.name %>, <%= @product.user.username %>! &#127881;
       </h1>
       <h2 class="subtitle">
         It's time to start planning your first release.
       </h2>
-      <a class="button is-info is-outlined is-medium" href="/products/<%@product.id%>/versions/new">Start planning v1</a>
+      <a class="button is-info is-outlined is-medium" href="/products/<%= @product.id %>/versions/new">Start planning v1</a>
     </div>
   </div>
 </section>

@@ -4,4 +4,12 @@ class Version < ActiveRecord::Base
   has_many :version_users
   has_many :users, through: :version_users
   has_many :tasks
+
+  def slug
+  	self.name.gsub(" ", "-").downcase
+  end
+
+  def self.find_by_slug(slug)
+  	self.all.find{ |instance| instance.slug == slug }
+  end
 end

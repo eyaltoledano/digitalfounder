@@ -70,13 +70,8 @@ class UsersController < ApplicationController
     redirect "/"
   end
 
-  # POST: /users
-  post "/users" do
-    redirect "/users"
-  end
-
   # GET: /users/5
-  get "/users/:id" do
+  get "/users/:slug" do
     @user = User.find(session[:user_id])
     erb :"/users/show.html"
   end
