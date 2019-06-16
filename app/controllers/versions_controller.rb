@@ -48,7 +48,7 @@ class VersionsController < ApplicationController
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
     @version = @product.versions.find_by_version_number(params[:version_number])
-    @open_tasks = @version.tasks.where(:status == "Open")
+    @open_tasks = @version.open_tasks.count
     if !@version.tasks.empty?
       rewards = []
       @version.tasks.where(status: "Open").each do |task|
@@ -59,7 +59,7 @@ class VersionsController < ApplicationController
       @available_rewards = "0"
     end
     binding.pry
-    @num_of_contributors = @version.tasks.where(!:contributor.nil).count
+    @num_of_contributors = @version.tasks_with_contributors
     erb :"/versions/show.html"
   end
 

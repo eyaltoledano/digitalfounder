@@ -12,4 +12,12 @@ class Version < ActiveRecord::Base
   def self.find_by_slug(slug)
   	self.all.find{ |instance| instance.slug == slug }
   end
+
+  def open_tasks
+    self.tasks.where(status: "Open")
+  end
+
+  def tasks_with_contributors
+    self.tasks.where(user_id: nil)
+  end
 end
