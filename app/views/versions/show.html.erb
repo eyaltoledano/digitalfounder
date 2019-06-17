@@ -6,7 +6,7 @@
       <div class="columns">
         <div class="column is-half">
           <h1 class="title">
-            <%= "#{@product.name}"%> <span class="tag is-link is-medium is-bold"><%="#{@version.version_number}" %></span>
+            <a class="has-text-white" href="/products/<%= @product.slug%>"><%= "#{@product.name}"%></a> <span class="tag is-link is-medium is-bold "><%="#{@version.version_number}" %></span>
           </h1>
           <p class="subtitle">
             <%= @version.description %>
@@ -22,21 +22,27 @@
             </div>
             <div class="level-item has-text-centered">
               <div>
-                <p class="heading">Open Tasks</p>
-                <p class="title"><%= @open_tasks %></p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
                 <p class="heading">Version Progress</p>
                 <p class="title"><%= @version.progress%>%</p>
               </div>
             </div>
             <div class="level-item has-text-centered">
               <div>
+                <p class="heading">Open Tasks</p>
+                <p class="title">
+                  <% if @open_tasks != 0 %>
+                    <a class="tag is-success is-large"><%= @open_tasks %></a>
+                  <% else %>
+                    <a class="tag is-danger is-large"><%= @open_tasks %></a>
+                  <% end %>
+                </p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
                 <p class="heading">Contributors</p>
 
-                <a data-target="#contributorsModal" aria-haspopup="true" class="title has-text-info modal-button tag is-white is-large">
+                <a data-target="#contributorsModal" aria-haspopup="true" class="title modal-button tag is-link is-large">
                   <%= @version.unique_contributors.count %>
                 </a>
                 </a>
