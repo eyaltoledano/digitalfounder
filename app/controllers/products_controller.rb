@@ -26,6 +26,7 @@ class ProductsController < ApplicationController
       flash[:notice] = "You're missing some information. Let's try again."
       redirect '/signup'
     else
+      params[:name].chomp
       @product = Product.create(:name => params[:name], :description => params[:description], :git_repo => params[:git_repo])
       @product.user = @user
       @product.status = "New"
@@ -74,6 +75,6 @@ class ProductsController < ApplicationController
   delete "/products/:slug/delete" do
     @product = Product.find_by_slug(params[:slug])
     @product.destroy
-    redirect "/dashboard"
+    redirect "/settings"
   end
 end

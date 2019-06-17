@@ -24,7 +24,7 @@
 
       <% if logged_in? %>
       <span class="navbar-item">
-        <small class="tag is-white"><a href="/users/<%= @user.slug %>"><i class="fas fa-check"></i> Logged in as <strong><%= @user.username %></strong></a></small>
+        <small class="tag is-white"><a href="/users/<%= @user.slug %>"><i class="fas fa-check"></i> Logged in as <strong><%= current_user.username %></strong></a></small>
       </span>
 
       <a class="navbar-item <% if current_url.include?("settings") %>is-active<% end %>" href="/settings">
@@ -37,7 +37,7 @@
         </a>
 
         <div class="navbar-dropdown">
-          <% @user.products.each do |product| %>
+          <% current_user.products.each do |product| %>
           <a class="navbar-item <% if request.path == "/products/#{product.slug}" %> is-active <% end %> " href="/products/<%= product.slug %>">
             <%= product.name %>
 

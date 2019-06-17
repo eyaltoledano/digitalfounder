@@ -6,7 +6,7 @@
       <div class="columns">
         <div class="column is-half">
           <h1 class="title">
-            <%= "#{@product.name} #{@version.version_number}" %>
+            <%= "#{@product.name}"%> <span class="tag is-link is-medium is-bold"><%="#{@version.version_number}" %></span>
           </h1>
           <p class="subtitle">
             <%= @version.description %>
@@ -17,7 +17,7 @@
             <div class="level-item has-text-centered">
               <div>
                 <p class="heading">Available Rewards</p>
-                <p class="title">$<%= sprintf "%.2f", @available_rewards %></p>
+                <p class="title has-text-success">$<%= sprintf "%.2f", @available_rewards %></p>
               </div>
             </div>
             <div class="level-item has-text-centered">
@@ -36,7 +36,7 @@
               <div>
                 <p class="heading">Contributors</p>
 
-                <a data-target="#contributorsModal" aria-haspopup="true" class="title has-text-info modal-button">
+                <a data-target="#contributorsModal" aria-haspopup="true" class="title has-text-info modal-button tag is-white is-large">
                   <%= @version.unique_contributors.count %>
                 </a>
                 </a>
@@ -103,7 +103,11 @@
         <td><a href="/products/<%= @product.slug %>/versions/<%= @version.version_number %>/tasks/<%= task.id %>"><%= task.name %></a>
         </td>
         <td><%= task.description %></td>
-        <td>$<%= sprintf "%.0f", task.reward %></td>
+        <td>
+          <strong class="has-text-success">
+            $<%= sprintf "%.0f", task.reward %>
+          </strong>
+        </td>
         <td>
           <% if task.user.nil? %>
           <a class="button is-success is-small" href="#">Claim</a>
@@ -218,26 +222,39 @@
             <p>This project can't have contributors if it doesn't have any tasks</p>
           </div>
           <% else %>
-            <% @version.unique_contributors.each do |contributor| %>
-            <div class="column is-one-third">
-              <div class="card">
-                <div class="card-content">
-                  <p class="title">
-                    <a href="/users/<%= contributor.slug %>"><%= contributor.username %></a>
-                  </p>
-                  <p class="small">
-                    Digital Founder since <%= contributor.created_at.strftime("%B  %Y") %>
-                  </p>
-                </div>
-                <footer class="card-footer">
-                  <p class="card-footer-item">
-                    <span>
-                      <a href="/users/<%= contributor.slug%>">Visit Profile</a>
-                    </span>
-                  </p>
-                </footer>
-              </div>
+            <% if !@version.tasks.empty? && @version.progress == "0"%>
+            <div class="column has-text-centered">
+              <p>
+                <span class="tag is-link is-large">
+                  There are currently <%= @version.open_tasks.count %> open tasks for <%= @product.name %> <%= @version.version_number %>.
+                </span>
+                <br>
+                Close this window and claim a task to start earning. &#128176;
+              </p>
             </div>
+
+              <% else %>
+                <% @version.unique_contributors.each do |contributor| %>
+                <div class="column is-one-third">
+                  <div class="card">
+                    <div class="card-content">
+                      <p class="title">
+                        <a href="/users/<%= contributor.slug %>"><%= contributor.username %></a>
+                      </p>
+                      <p class="small">
+                        Digital Founder since <%= contributor.created_at.strftime("%B  %Y") %>
+                      </p>
+                    </div>
+                    <footer class="card-footer">
+                      <p class="card-footer-item">
+                        <span>
+                          <a href="/users/<%= contributor.slug%>">Visit Profile</a>
+                        </span>
+                      </p>
+                    </footer>
+                  </div>
+                </div>
+              <% end %>
             <% end %>
           <% end %>
         </div>

@@ -45,11 +45,13 @@
             </div>
 
         </form>
+        <form action="/products/<%=@product.slug%>/delete" method="post" onsubmit="confirm('Are you sure you want to delete <%= @product.name %>?')">
+          <input type="hidden" name="_method" value="delete">
         <div class="has-text-centered">
           <hr>
           <p><small><strong class="has-text-danger">&#9888; danger zone &#9888;</strong></small></p>
-          <a class="button is-danger is-small" href="#">Delete <%= @product.name %></a>
-
+          <input type="submit" class="button is-danger is-small" href="#" value="Delete <%= @product.name %>"></input>
+        </form>
         </div>
       </div>
 
