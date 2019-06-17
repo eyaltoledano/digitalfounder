@@ -18,6 +18,6 @@ class Version < ActiveRecord::Base
   end
 
   def tasks_with_contributors
-    self.tasks.where(user_id: nil)
+    self.tasks.where(user_id: !nil)
   end
 end

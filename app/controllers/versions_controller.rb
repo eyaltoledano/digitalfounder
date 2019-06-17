@@ -58,8 +58,8 @@ class VersionsController < ApplicationController
     else
       @available_rewards = "0"
     end
-    binding.pry
     @num_of_contributors = @version.tasks_with_contributors
+    # binding.pry
     erb :"/versions/show.html"
   end
 

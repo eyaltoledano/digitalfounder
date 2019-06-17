@@ -24,7 +24,7 @@ class TasksController < ApplicationController
   post "/products/:slug/versions/:version_number/new_task" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
-    @version = Version.find_by_version_number(params[:version_number])
+    @version = Version.where(product_id: @product.id, version_number: params[:version_number]).first
 
     if params[:name] == "" || params[:description] == "" || params[:reward] == ""
       flash[:notice] = "The task you tried to submit is missing some information. Try again."
@@ -35,6 +35,7 @@ class TasksController < ApplicationController
       @task.product = @product
       @task.status = "Open"
       @task.save
+      @task.version.tasks << @task
       flash[:notice] = "The task was successfully created."
       redirect "/products/#{@product.slug}/versions/#{@version.version_number}"
     end

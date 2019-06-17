@@ -71,7 +71,7 @@
           <% if product.versions.empty? %>
           <a class="button is-primary" href="/products<%=product.slug%>/new_version">new version</a>
           <% else %>
-          <a href="/products/<%=product.slug%>/versions/v<%=product.versions.last.id%>">
+          <a href="/products/<%=product.slug%>/versions/<%=product.versions.last.version_number%>">
             <%= product.versions.last.version_number %>
           </a>
           <% end %>

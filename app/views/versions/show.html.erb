@@ -33,7 +33,11 @@
             <div class="level-item has-text-centered">
               <div>
                 <p class="heading">Contributors</p>
-                <p class="title"><%= @num_of_contributors.count %></p>
+
+                <a data-target="#contributorsModal" aria-haspopup="true" class="title has-text-info modal-button">
+                  <%= @num_of_contributors.count %>
+                </a>
+                </a>
               </div>
             </div>
           </span>
@@ -74,7 +78,7 @@
 <section class="container" id="version-tasks-table-section">
   <br>
   <h2 class="title">Tasks</h2>
-  <a data-target="#taskModal" aria-haspopup="true" id="open-modal" class="button is-small modal-button">New task</a>
+  <a data-target="#taskModal" aria-haspopup="true" class="button is-small modal-button">New task</a>
 
   <table class="table">
     <thead>
@@ -191,6 +195,53 @@
   </div>
 </div>
 
+
+<div class="modal" id="contributorsModal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title"><%= @product.name%> <%= @version.version_number %> Contributors</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="container has-text-centered">
+        <div class="columns">
+          <% if @version.tasks_with_contributors.empty? %>
+          <div class="column">
+            <p>This project can't have contributors if it doesn't have any tasks</p>
+          </div>
+          <% else %>
+            <% @version.tasks_with_contributors.each do |task| %>
+            <div class="column is-one-third">
+              <div class="card">
+                <div class="card-content">
+                  <p class="title">
+                    <a href="/users/<%= task.user.slug %>"><%= task.user.username %></a>
+                  </p>
+                  <p class="small">
+                    Digital Founder since <%= task.user.created_at.strftime("%B  %Y") %>
+                  </p>
+                </div>
+                <footer class="card-footer">
+                  <p class="card-footer-item">
+                    <span>
+                      <a href="/users/<%= task.user.slug%>">Visit Profile</a>
+                    </span>
+                  </p>
+                </footer>
+              </div>
+            </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+    </footer>
+  </div>
+</div>
+
+
 <script type="text/javascript">
   document.querySelectorAll('.modal-button').forEach(function(el) {
   el.addEventListener('click', function() {
@@ -206,3 +257,8 @@
 </script>
 
 <!-- End new task modal -->
+
+<!-- Start contributors modal -->
+
+
+<!-- End Contributors Modal -->
