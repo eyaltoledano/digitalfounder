@@ -18,15 +18,14 @@ class Version < ActiveRecord::Base
   end
 
   def tasks_with_contributors
-    self.tasks.where(user_id: !nil)
-  end
-
-  def total_awarded
-    rewarded = []
-    @version.tasks.where(status: "Complete").each do |task|
-      rewarded << task.reward.to_f
+    contributed = []
+    self.tasks.each do |task|
+      # binding.pry
+      if task.user_id != nil
+        contributed << task
+      end
     end
-    total_awarded = rewarded.inject(0){|sum,x| sum + x }
+    contributed
   end
 
   def unique_contributors
@@ -45,6 +44,14 @@ class Version < ActiveRecord::Base
     self.tasks.each {|task| completed << task if task.status == "Complete" }
     result = completed.count.percent_of(self.tasks.count)
     sprintf "%.0f", result
+  end
+
+  def total_awarded
+    rewarded = []
+    @version.tasks.where(status: "Complete").each do |task|
+      rewarded << task.reward.to_f
+    end
+    total_awarded = rewarded.inject(0){|sum,x| sum + x }
   end
 
 end
