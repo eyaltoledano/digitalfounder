@@ -61,8 +61,12 @@
               </div>
               <div class="level-item has-text-centered">
                 <div>
-                  <p class="heading">Available Tasks</p>
-                  <p class="title"><span class="tag is-warning">placeholder</span></p>
+                  <p class="heading">Open Tasks</p>
+                  <p class="title">
+                    <a class="tag is-white is-large" href="/products/<%=@product.slug%>/versions/<%=@versions.last.version_number%>">
+                      <%= @versions.last.open_tasks.count %>
+                    </a>
+                  </p>
                 </div>
               </div>
             </span>

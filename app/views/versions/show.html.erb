@@ -1,3 +1,5 @@
+<!-- Start hero unit -->
+
 <section class="hero is-dark is-bold" id="dashboard_hero">
   <div class="hero-body">
     <div class="container">
@@ -35,7 +37,7 @@
                 <p class="heading">Contributors</p>
 
                 <a data-target="#contributorsModal" aria-haspopup="true" class="title has-text-info modal-button">
-                  <%= @num_of_contributors.count %>
+                  <%= @version.unique_contributors.count %>
                 </a>
                 </a>
               </div>
@@ -46,6 +48,8 @@
     </div>
   </div>
 </section>
+
+<!-- End hero unit -->
 
 <% if @version.tasks.empty? %>
 
@@ -195,6 +199,9 @@
   </div>
 </div>
 
+<!-- End new task modal -->
+
+<!-- Start contributors modal -->
 
 <div class="modal" id="contributorsModal">
   <div class="modal-background"></div>
@@ -206,26 +213,26 @@
     <section class="modal-card-body">
       <div class="container has-text-centered">
         <div class="columns">
-          <% if @version.tasks_with_contributors.empty? %>
+          <% if @version.tasks.empty? %>
           <div class="column">
             <p>This project can't have contributors if it doesn't have any tasks</p>
           </div>
           <% else %>
-            <% @version.tasks_with_contributors.each do |task| %>
+            <% @version.unique_contributors.each do |contributor| %>
             <div class="column is-one-third">
               <div class="card">
                 <div class="card-content">
                   <p class="title">
-                    <a href="/users/<%= task.user.slug %>"><%= task.user.username %></a>
+                    <a href="/users/<%= contributor.slug %>"><%= contributor.username %></a>
                   </p>
                   <p class="small">
-                    Digital Founder since <%= task.user.created_at.strftime("%B  %Y") %>
+                    Digital Founder since <%= contributor.created_at.strftime("%B  %Y") %>
                   </p>
                 </div>
                 <footer class="card-footer">
                   <p class="card-footer-item">
                     <span>
-                      <a href="/users/<%= task.user.slug%>">Visit Profile</a>
+                      <a href="/users/<%= contributor.slug%>">Visit Profile</a>
                     </span>
                   </p>
                 </footer>
@@ -241,6 +248,9 @@
   </div>
 </div>
 
+<!-- End Contributors Modal -->
+
+<!-- Start Modal Close Button -->
 
 <script type="text/javascript">
   document.querySelectorAll('.modal-button').forEach(function(el) {
@@ -256,9 +266,4 @@
 });
 </script>
 
-<!-- End new task modal -->
-
-<!-- Start contributors modal -->
-
-
-<!-- End Contributors Modal -->
+<!-- End Modal Close Button -->

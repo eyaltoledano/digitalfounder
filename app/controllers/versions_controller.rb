@@ -25,9 +25,6 @@ class VersionsController < ApplicationController
   post "/products/:slug/new_version" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
-    # when a new version is created, add the current user to version.users
-    # when a new version is created, set its progress to 0
-
     if params[:description] == "" || params[:release_date] == "" || params[:version_number] == ""
       flash[:notice] = "Looks like something's not quite right with what you submitted. Try again."
       redirect "/products/#{@product}/new_version"
