@@ -44,3 +44,7 @@ div#versions-empty-state {
 #element-toggle:checked ~ #myModal {
   display: flex;
 }
+
+#home-hero {
+  margin-top: -50px;
+}
