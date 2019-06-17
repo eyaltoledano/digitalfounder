@@ -13,10 +13,10 @@
           <th>Name</th>
           <th>Description</th>
           <th>Founder</th>
-          <th>Status</th>
           <th>Repository</th>
+          <th>Current Version</th>
           <th>Founding Date</th>
-          <th>Contributors</th>
+          <th>Current Contributors</th>
         </tr>
       </thead>
 
@@ -33,12 +33,26 @@
               <%= product.user.username %>
             </a>
           </td>
-          <td><%= product.status %></td>
           <td>
             <a href="<%= product.git_repo %>"><%= product.git_repo %></a>
           </td>
+          <% if !product.versions.empty? %>
+          <td><a class="tag is-link" href="/products/<%=product.slug%>/versions/<%=product.versions.last.version_number%>"><%=product.versions.last.version_number %></a></td>
+          <% else %>
+            <td>
+              <a class="tag is-success" href="/products/<%=product.slug%>/versions/new_version">Create v1</a>
+            </td>
+          <%end%>
           <td><%= product.created_at.strftime("%B %-d, %Y") %></td>
-          <td><span class="tag is-ight">Coming soon</span></td>
+          <% if !product.versions.empty? %>
+          <td>
+            <a class="tag is-link" href="/products/<%=product.slug%>/versions/<%=product.versions.last.version_number%>"><%=product.versions.last.unique_contributors.count %></a>
+          </td>
+          <% else %>
+          <td>
+            <a class="tag is-link" href="#">0</a>
+          </td>
+          <%end%>
         </tr>
         <% end %>
       </tbody>
