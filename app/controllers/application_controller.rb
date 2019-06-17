@@ -37,3 +37,12 @@ class ApplicationController < Sinatra::Base
 
 
 end
+
+# This below method helps create a percentage of a number
+# Usage: 1.percent_of(10) #=> 10.0
+
+class Numeric
+  def percent_of(n)
+    self.to_f / n.to_f * 100.0
+  end
+end
