@@ -6,10 +6,12 @@
       <div class="columns">
         <div class="column is-half">
           <h1 class="title">
-            <a class="has-text-white" href="/products/<%= @product.slug%>"><%= "#{@product.name}"%></a> <span class="tag is-link is-medium is-bold "><%="#{@version.version_number}" %></span>
+            <a class="has-text-white" href="/products/<%= @product.slug%>">
+              <%= "#{@product.name}"%>
+            </a> <% if @version %><span class="tag is-link is-medium is-bold "><%="#{@version.version_number}" %></span><% end %>
           </h1>
           <p class="subtitle">
-            <%= @version.description %>
+            <%= @version.description if @version %>
           </p>
         </div>
         <div class="column">
@@ -23,7 +25,7 @@
             <div class="level-item has-text-centered">
               <div>
                 <p class="heading">Version Progress</p>
-                <p class="title"><%= @version.progress%>%</p>
+                <p class="title"><%= @version.progress if @version%>%</p>
               </div>
             </div>
             <div class="level-item has-text-centered">
@@ -43,7 +45,7 @@
                 <p class="heading">Contributors</p>
 
                 <a data-target="#contributorsModal" aria-haspopup="true" class="title modal-button tag is-link is-large">
-                  <%= @version.unique_contributors.count %>
+                  <%= @version.unique_contributors.count if @version %>
                 </a>
                 </a>
               </div>

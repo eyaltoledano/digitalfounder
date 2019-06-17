@@ -87,7 +87,7 @@ class UsersController < ApplicationController
 
   # GET: /users/5
   get "/users/:slug" do
-    @user = User.find(session[:user_id])
+    @user = User.find_by_slug(params[:slug])
     erb :"/users/show.html"
   end
 

@@ -40,7 +40,7 @@
           <td><a class="tag is-link" href="/products/<%=product.slug%>/versions/<%=product.versions.last.version_number%>"><%=product.versions.last.version_number %></a></td>
           <% else %>
             <td>
-              <a class="tag is-success" href="/products/<%=product.slug%>/versions/new_version">Create v1</a>
+              <a class="tag is-success" href="/products/<%=product.slug%>/new_version">Create v1</a>
             </td>
           <%end%>
           <td><%= product.created_at.strftime("%B %-d, %Y") %></td>
