@@ -51,7 +51,7 @@ class TasksController < ApplicationController
   end
 
   # GET: /tasks/5/edit
-  get "/products/:slug/:version_number/tasks/:id/edit" do
+  get "/products/:slug/versions/:version_number/tasks/:id/edit" do
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
     @version = Version.find_by_version_number(params[:version_number])
@@ -65,6 +65,12 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
 
     redirect "/tasks/:id"
+  end
+
+  patch '/products/:slug/versions/:version_number/tasks/:id/claim' do
+    @task = Task.find(params[:id])
+    current_user.claim(@task)
+    redirect "/products/#{@task.product.slug}/versions/#{@task.version.version_number}"
   end
 
   # DELETE: /tasks/5/delete

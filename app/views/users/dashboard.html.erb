@@ -2,7 +2,7 @@
   <div class="hero-body">
     <div class="container">
       <div class="columns">
-        <div class="column is-three-quarters">
+        <div class="column is-two-thirds">
           <h1 class="title">
             <%= @greeting %>, <%= @user.username + " &#128075;" %>
           </h1>
@@ -18,24 +18,84 @@
         <div class="column">
           <div>
             <span class="level is-centered">
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Account Balance</p>
-                  <p class="title">$<%= sprintf "%.2f", @user.balance %></p>
+              <div class="is-grouped">
+                <div class="level-item has-text-centered">
+                  <div>
+                    <p class="heading">Account Balance</p>
+                    <p class="title">$<%= sprintf "%.2f", @user.balance %></p>
+                  </div>
+                </div>
+                <div class="level-item has-text-centered">
+                  <div>
+                    <p class="heading">Incomplete Tasks</p>
+                    <p class="tag is-dark is-large"><%= @user.open_claimed_tasks.count %></p>
+                  </div>
                 </div>
               </div>
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Ready to Withdraw</p>
-                  <p class="title"><span class="tag is-light">Coming soon</span></p>
+              <div class="is-grouped">
+                <div class="level-item has-text-centered">
+                  <div>
+                    <p class="heading">Ready to Withdraw</p>
+                    <p class="title"><span class="tag is-dark">Coming soon</span></p>
+                  </div>
+                </div>
+                <div class="level-item has-text-centered">
+                  <div>
+                    <p class="heading">Claimed Task Value</p>
+                    <p class="tag is-success is-large"><%= @user.open_claimed_tasks.count %></p>
+                  </div>
                 </div>
               </div>
+
+
             </span>
           </div>
         </div>
       </div>
     </div>
   </div>
+</section>
+
+<br>
+
+<section class="container" id="dashboard-tasks-table-section">
+  <h2 class="title">Your Claimed Tasks</h2>
+  <table class="table">
+
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Version</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Reward</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @user.claimed_tasks.each do |task| %>
+      <tr>
+        <th><%= task.id %></th>
+        <td><a href="/products/<%= task.product.slug %>">
+          <%= task.product.name %></a>
+        </td>
+        <td>
+          <a href="/products/<%= task.product.slug %>/versions/<%= task.version.version_number %>"><%= task.version.version_number %></a>
+        </td>
+        <td><strong><%= task.name %></strong></td>
+        <td><%= task.description %></td>
+        <td>
+          <strong class="has-text-success">
+            $ <%= sprintf "%.2f", task.reward %>
+          </strong>
+        </td>
+        <td><%= task.status %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
 </section>
 
 <section class="container" id="dashboard-products-table-section">

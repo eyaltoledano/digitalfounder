@@ -118,7 +118,43 @@
         </td>
         <td>
           <% if task.user.nil? %>
-          <a class="button is-success is-small" href="#">Claim</a>
+          <a data-target="#claimModal" aria-haspopup="true" class="title modal-button tag is-success is-small">
+            Claim
+          </a>
+
+          <!-- Start Claim modal -->
+          <div class="modal" id="claimModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+              <header class="modal-card-head">
+                <p class="modal-card-title">
+                  <strong class="has-text-link"><%=task.name%></strong>
+                </p>
+                <button class="delete" aria-label="close"></button>
+              </header>
+              <section class="modal-card-body">
+                <div class="container ">
+                  <div class="column">
+                    <p class="headline">
+                      <strong>Do you want to claim this task?</strong>
+
+                      <span class="is-small">To earn this task's $<%= task.reward%> reward, you'll have to submit a Github pull request and provide that link. If accepted by the owner of the product, your reward will be added to your balance.</span>
+                    </p>
+                  </div>
+                </div>
+              </section>
+              <footer class="modal-card-foot">
+
+                <form action="/products/<%=task.product.slug%>/versions/<%=task.version.version_number%>/tasks/<%=task.id%>/claim" method="post">
+                  <input type="hidden" name="_method" value="PATCH">
+
+                  <input class="button is-link" type="submit" value="Claim this task">
+                  </form>
+              </footer>
+            </div>
+          </div>
+          <!-- End Claim Modal -->
+
           <% else%>
           <a href="/users/<%= task.user.username %>">
             <%= task.user.username %>
@@ -219,7 +255,7 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title"><%= @product.name%> <%= @version.version_number %> Contributors</p>
+      <p class="modal-card-title">Users contributing to <%= @product.name%> <%= @version.version_number %></p>
       <button class="delete" aria-label="close"></button>
     </header>
     <section class="modal-card-body">
@@ -275,6 +311,8 @@
 </div>
 
 <!-- End Contributors Modal -->
+
+
 
 <!-- Start Modal Close Button -->
 

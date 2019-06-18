@@ -45,10 +45,17 @@ class ProductsController < ApplicationController
 
   # GET: /products/5/edit
   get "/products/:slug/edit" do
+    redirect '/login' && flash[:notice] = "You need to be logged in to edit products." if !logged_in?
     @product = Product.find_by_slug(params[:slug])
     @user = @product.user
-    @products = @user.products
-    erb :"/products/edit.html"
+
+    if @user != current_user
+      flash[:notice] = "Can't edit someone else's product. Play nice!"
+      redirect '/dashboard'
+    else
+      @products = @user.products
+      erb :"/products/edit.html"
+    end
   end
 
   # PATCH: /products/5
@@ -73,8 +80,15 @@ class ProductsController < ApplicationController
 
   # DELETE: /products/5/delete
   delete "/products/:slug/delete" do
-    @product = Product.find_by_slug(params[:slug])
-    @product.destroy
-    redirect "/settings"
+    redirect '/login' && flash[:notice] = "You need to be logged in to delete a product." if !logged_in?
+
+    if @user != current_user
+      flash[:notice] = "Can't delete someone else's product. Play nice!"
+      redirect '/dashboard'
+    else
+      @product = Product.find_by_slug(params[:slug])
+      @product.destroy
+      redirect "/settings"
+    end
   end
 end
