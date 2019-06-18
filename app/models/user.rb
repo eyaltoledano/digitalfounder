@@ -62,16 +62,18 @@ class User < ActiveRecord::Base
     rewards.inject(0, :+)
   end
 
-  def has_items_for_review?
+  def tasks_for_review
     items_to_review = []
-
     self.versions.each do |version|
       version.tasks.each do |task|
         items_to_review << task if task.status == "Ready for Review" || task.status == "Reviewing" || task.status == "PR Submitted" || task.status == "Accepted"
       end
     end
+    items_to_review
+  end
 
-    items_to_review.count > 0 ? true : false
+  def has_items_for_review?
+    tasks_for_review.count > 0 ? true : false
   end
 
 end
