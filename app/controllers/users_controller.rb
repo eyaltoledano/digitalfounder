@@ -39,6 +39,7 @@ class UsersController < ApplicationController
       redirect '/login'
       flash[:notice] = "You need to be logged in to access this page."
     end
+    @status_list = ["Open", "Claimed", "Researching", "Writing specs", "In progress", "Ready for Review"]
     erb :"/users/dashboard.html"
   end
 

@@ -61,10 +61,13 @@ class TasksController < ApplicationController
   end
 
   # PATCH: /tasks/5
-  patch "/tasks/:id" do
+  patch "/products/:slug/versions/:version_number/tasks/:id/update_status" do
+    binding.pry
     @task = Task.find(params[:id])
-
-    redirect "/tasks/:id"
+    @task.status = params[:status]
+    @task.pr_link = params[:pr_link]
+    @task.save
+    redirect "/dashboard"
   end
 
   patch '/products/:slug/versions/:version_number/tasks/:id/claim' do

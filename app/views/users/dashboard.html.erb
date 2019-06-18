@@ -8,47 +8,14 @@
           </h1>
           <h2 class="subtitle">
             <% if @owned_products == 0 %>
-              You don't have any products to work on yet.
+              You don't have any product to work on yet.
               <a href="/products/new" class="button is-small is-primary is-outlined">Create your first product</a>
             <% else %>
-              You have <%= @owned_products %> products to work on.
+              You have <%= @owned_products %> product<%= "s" if @owned_products > 1 %> to work on.
             <% end %>
           </h2>
         </div>
-        <!-- <div class="column">
-          <div>
-            <span class="level is-centered">
-              <div class="is-grouped">
-                <div class="level-item has-text-centered">
-                  <div>
-                    <p class="heading">Account Balance</p>
-                    <p class="title">$<%= sprintf "%.2f", @user.balance %></p>
-                  </div>
-                </div>
-                <div class="level-item has-text-centered">
-                  <div>
-                    <p class="heading">Incomplete Tasks</p>
-                    <p class="tag is-dark is-large"><%= @user.open_claimed_tasks.count %></p>
-                  </div>
-                </div>
-              </div>
-              <div class="is-grouped">
-                <div class="level-item has-text-centered">
-                  <div>
-                    <p class="heading">Ready to Withdraw</p>
-                    <p class="title"><span class="tag is-dark">Coming soon</span></p>
-                  </div>
-                </div>
-                <div class="level-item has-text-centered">
-                  <div>
-                    <p class="heading">Claimed Task Value</p>
-                    <p class="tag is-success is-large">$<%= sprintf "%.2f", @user.claimed_task_value %></p>
-                  </div>
-                </div>
-              </div>
-            </span>
-          </div>
-        </div> -->
+
         <div class="column">
           <nav class="level">
             <div class="level-item has-text-centered">
@@ -61,7 +28,7 @@
             <div class="level-item has-text-centered">
               <div>
                 <p class="heading">Current Task Value</p>
-                <p class="tag is-info is-large">
+                <p class="title has-text-success has-text-weight-semibold">
                   $<%= sprintf "%.2f", @user.claimed_task_value %>
                 </p>
               </div>
@@ -69,7 +36,7 @@
             <div class="level-item has-text-centered">
               <div>
                 <p class="heading">Account Balance</p>
-                <p class="tag is-warning is-large">
+                <p class="tag is-dark is-large">
                   $<%= sprintf "%.2f", @user.balance %>
                 </p>
               </div>
@@ -119,7 +86,7 @@
           <%= task.product.name %></a>
         </td>
         <td>
-          <a href="/products/<%= task.product.slug %>/versions/<%= task.version.version_number %>"><%= task.version.version_number %></a>
+          <a class="tag" href="/products/<%= task.product.slug %>/versions/<%= task.version.version_number %>"><%= task.version.version_number %></a>
         </td>
         <td><strong><%= task.name %></strong></td>
         <td><%= task.description %></td>
@@ -128,7 +95,49 @@
             $ <%= sprintf "%.2f", task.reward %>
           </strong>
         </td>
-        <td><%= task.status %></td>
+        <td>
+          <a data-target="#statusModal" aria-haspopup="true" class="modal-button button is-small is-inverted">
+            Update status
+          </a>
+          <!-- Start Status modal -->
+          <div class="modal" id="statusModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+              <header class="modal-card-head">
+                <p class="modal-card-title">
+                  <strong class="has-text-link"><%=task.name%></strong>
+                  <label class="label">Current Status: <%= task.status %></label>
+                </p>
+                <button class="delete" aria-label="close"></button>
+              </header>
+              <section class="modal-card-body">
+                <div class="container has-text-centered">
+                  <div class="column">
+                    <div class="">
+              <form action="/products/<%=task.product.slug%>/versions/<%=task.version.version_number%>/tasks/<%=task.id%>/update_status" method="post">
+                    </div>
+
+                    <input class="input" type="text" name="pr_link" placeholder="Enter this task's Pull Request link" value="<%task.pr_link%>">
+                      <select id="status" class="input" type="text" name="status" placeholder="Choose a new status">
+                        <% @status_list.each do |status| %>
+                        <option value="<%= status %>"><%= status %></option>
+                        <% end %>
+                      </select>
+                  </div>
+                </div>
+              </section>
+              <footer class="modal-card-foot">
+
+
+                  <input type="hidden" name="_method" value="PATCH">
+
+                  <input class="button is-link" type="submit" value="Update status">
+                  </form>
+              </footer>
+            </div>
+          </div>
+          <!-- End Status Modal -->
+        </td>
       </tr>
       <% end %>
     </tbody>
@@ -166,7 +175,7 @@
         </td>
         <td>
           <% if product.versions.empty? %>
-          <a class="button is-primary" href="/products<%=product.slug%>/new_version">new version</a>
+          <a class="button is-link" href="/products/<%=product.slug%>/new_version">Create v1</a>
           <% else %>
           <i class="fas fa-subway"></i>
           <a href="/products/<%=product.slug%>/versions/<%=product.versions.last.version_number%>">
@@ -180,3 +189,21 @@
     </tbody>
   </table>
 </section>
+
+<!-- Start Modal Open/Close Button -->
+
+<script type="text/javascript">
+  document.querySelectorAll('.modal-button').forEach(function(el) {
+  el.addEventListener('click', function() {
+    var target = document.querySelector(el.getAttribute('data-target'));
+
+    target.classList.add('is-active');
+
+    target.querySelector('.delete').addEventListener('click',   function() {
+        target.classList.remove('is-active');
+     });
+  });
+});
+</script>
+
+<!-- End Modal Open/Close Button -->

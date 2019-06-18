@@ -52,8 +52,8 @@
                     <p class="title">N/A</p>
                   <% else %>
                     <p class="title">
-                      <a class="tag is-link is-large" id="product-current-version" href="/products/<%=@product.slug%>/versions/<%=@versions.last.version_number %>">
-                        <%= @versions.last.version_number %>
+                      <a class="button is-link is-large" id="product-current-version" href="/products/<%=@product.slug%>/versions/<%=@versions.last.version_number %>">
+                        <%=@product.name%> <%= @versions.last.version_number %>
                       </a>
                     </p>
                   <% end %>
@@ -86,23 +86,44 @@
 
 <% if @product.versions.empty? %>
 
-<!-- Start empty state -->
+<% if @product.user != current_user %>
+  <!-- Start empty state for product NON owner-->
 
-<section class="container has-text-centered">
-  <div id="versions-empty-state" class="columns is-vcentered">
-    <div class="column">
-      <h1 class="title">
-        Congratulations on creating <%= @product.name %>, <%= @product.user.username %>! &#127881;
-      </h1>
-      <h2 class="subtitle">
-        It's time to start planning your first release.
-      </h2>
-      <a class="button is-info is-outlined is-medium" href="/products/<%= @product.slug %>/new_version">Start planning v1</a>
+  <section class="container has-text-centered">
+    <div id="versions-empty-state" class="columns is-vcentered">
+      <div class="column">
+        <h1 class="title">
+          <%= @product.name %> v1 Coming Soon
+        </h1>
+        <h2 class="subtitle">
+          Want to get involved? Get in touch with <a href="mailto:<%=@product.user.email%>"><%=@product.user.username%></a>
+        </h2>
+        <a class="button is-info is-outlined is-medium" href="mailto:<%=@product.user.email%>">Email <%=@product.user.username%> </a>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- End empty state -->
+  <!-- End empty state for product NON owner -->
+  <% else %>
+
+  <!-- Start empty state for product owner-->
+
+  <section class="container has-text-centered">
+    <div id="versions-empty-state" class="columns is-vcentered">
+      <div class="column">
+        <h1 class="title">
+          Congratulations on creating <%= @product.name %>, <%= @product.user.username %>! &#127881;
+        </h1>
+        <h2 class="subtitle">
+          It's time to start planning your first release.
+        </h2>
+        <a class="button is-info is-outlined is-medium" href="/products/<%= @product.slug %>/new_version">Start planning v1</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- End empty state for product owner -->
+<% end %>
 
 <% else %>
 
@@ -130,8 +151,8 @@
       <% @product.versions.each do |version| %>
       <tr>
         <th><%= version.id %></th>
-        <td><a href="/products/<%=@product.slug%>/versions/<%= version.version_number %>">
-          <%= version.version_number %></a>
+        <td><a href="/products/<%=@product.slug%>/versions/<%= version.version_number %>" class="tag is-link">
+          <%= @product.name %> <%= version.version_number %></a>
         </td>
         <td><%= version.description %></td>
         <td><%= version.progress %>%</td>
