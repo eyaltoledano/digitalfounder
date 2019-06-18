@@ -54,4 +54,12 @@ class User < ActiveRecord::Base
     claimed_task_rewards.inject(0, :+)
   end
 
+  def pending_balance
+    rewards = []
+    self.open_claimed_tasks.each do |task|
+      rewards << task.reward.to_f if task.status == "Ready for Review"
+    end
+    rewards.inject(0, :+)
+  end
+
 end

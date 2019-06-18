@@ -27,7 +27,7 @@
 
             <div class="level-item has-text-centered">
               <div>
-                <p class="heading">Current Task Value</p>
+                <p class="heading">Current Tasks Value</p>
                 <p class="title has-text-success has-text-weight-semibold">
                   $<%= sprintf "%.2f", @user.claimed_task_value %>
                 </p>
@@ -35,16 +35,16 @@
             </div>
             <div class="level-item has-text-centered">
               <div>
-                <p class="heading">Account Balance</p>
-                <p class="tag is-dark is-large">
-                  $<%= sprintf "%.2f", @user.balance %>
+                <p class="heading">Pending</p>
+                <p class="tag <% if @user.pending_balance > 0 %>is-warning<%else%>is-dark<%end%> is-large">
+                  $<%= sprintf "%.2f", @user.pending_balance %>
                 </p>
               </div>
             </div>
             <div class="level-item has-text-centered">
               <div>
-                <p class="heading">Ready to Withdraw</p>
-                <p class="tag is-success is-large">
+                <p class="heading">Account Balance</p>
+                <p class="tag is-dark is-large">
                   $<%= sprintf "%.2f", @user.balance %>
                 </p>
               </div>
@@ -71,15 +71,17 @@
         <th>ID</th>
         <th>Product</th>
         <th>Version</th>
-        <th>Name</th>
+        <th>Task Name</th>
         <th>Description</th>
         <th>Reward</th>
         <th>Status</th>
+        <th></th>
       </tr>
     </thead>
 
     <tbody>
       <% @user.claimed_tasks.each do |task| %>
+      <%= erb :'/shared/_dash_update_status_modal', locals: {task: task} %>
       <tr>
         <th><%= task.id %></th>
         <td><a href="/products/<%= task.product.slug %>">
@@ -96,47 +98,18 @@
           </strong>
         </td>
         <td>
-          <a data-target="#statusModal" aria-haspopup="true" class="modal-button button is-small is-inverted">
+          <%= task.status %>
+        </td>
+        <td>
+          <% unless task.status == "Complete" %>
+          <a data-target="#statusModal-<%=task.id%>" aria-haspopup="true" class="modal-button button is-small is-inverted">
             Update status
           </a>
-          <!-- Start Status modal -->
-          <div class="modal" id="statusModal">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-              <header class="modal-card-head">
-                <p class="modal-card-title">
-                  <strong class="has-text-link"><%=task.name%></strong>
-                  <label class="label">Current Status: <%= task.status %></label>
-                </p>
-                <button class="delete" aria-label="close"></button>
-              </header>
-              <section class="modal-card-body">
-                <div class="container has-text-centered">
-                  <div class="column">
-                    <div class="">
-              <form action="/products/<%=task.product.slug%>/versions/<%=task.version.version_number%>/tasks/<%=task.id%>/update_status" method="post">
-                    </div>
-
-                    <input class="input" type="text" name="pr_link" placeholder="Enter this task's Pull Request link" value="<%task.pr_link%>">
-                      <select id="status" class="input" type="text" name="status" placeholder="Choose a new status">
-                        <% @status_list.each do |status| %>
-                        <option value="<%= status %>"><%= status %></option>
-                        <% end %>
-                      </select>
-                  </div>
-                </div>
-              </section>
-              <footer class="modal-card-foot">
-
-
-                  <input type="hidden" name="_method" value="PATCH">
-
-                  <input class="button is-link" type="submit" value="Update status">
-                  </form>
-              </footer>
-            </div>
-          </div>
-          <!-- End Status Modal -->
+          <% else %>
+          <a class=" button is-small is-inverted" disabled>
+            <span><i class="fas fa-check has-text-success"></i> Completed</span>
+          </a>
+          <% end %>
         </td>
       </tr>
       <% end %>
@@ -177,8 +150,7 @@
           <% if product.versions.empty? %>
           <a class="button is-link" href="/products/<%=product.slug%>/new_version">Create v1</a>
           <% else %>
-          <i class="fas fa-subway"></i>
-          <a href="/products/<%=product.slug%>/versions/<%=product.versions.last.version_number%>">
+          <a class="tag is-link" href="/products/<%=product.slug%>/versions/<%=product.versions.last.version_number%>">
             <%= product.versions.last.version_number %>
           </a>
           <% end %>
