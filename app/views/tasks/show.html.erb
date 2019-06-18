@@ -1,9 +1,9 @@
-<section class="hero is-link is-bold" id="dashboard_hero">
+<section class="hero is-link is-bold is-large" id="dashboard_hero">
 
-  <div class="hero-body">
+  <div class="hero-body ">
     <div class="container">
       <div class="columns">
-        <div class="column is-two-thirds">
+        <div class="column">
           <h1 class="title">
             <%= @task.name %>
           </h1>
@@ -11,35 +11,71 @@
             A task from <a href="/products/<%= @task.version.product.slug %>/versions/<%= @task.version.version_number%>"><%= "#{@task.version.product.name}  (#{@task.version.version_number})" %></a>
           </p>
           <div class="content is-medium">
-            <p>Reward: $<%= @task.reward %></p>
+            <p><%= @task.description %></p>
           </div>
         </div>
         <div class="column">
           <span class="level is-centered">
             <div class="level-item has-text-centered">
               <div>
+                <p class="heading">Task Status</p>
+                <p class="title"><span class="tag is-light is-large"><%= @task.status%></span></p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Task Reward</p>
+                <p class="title has-text-success">$<%= sprintf "%.2f", @task.reward %></p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <% if @task.user_id == nil %>
                 <p class="heading">Claim this task</p>
-                <p class="title is-light">
-                  <a href="#" class="button">Claim</a>
-                </p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Open Tasks</p>
-                <p class="title"><span class="tag is-warning">placeholder</span></p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Completed Tasks</p>
-                <p class="title"><span class="tag is-warning">placeholder</span></p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Total Tasks</p>
-                <p class="title"><span class="tag is-warning">placeholder</span></p>
+
+                <a data-target="#claimModal" aria-haspopup="true" class="title modal-button button is-success is-large">
+                  Claim this task
+                </a>
+
+                <!-- Start Claim modal -->
+                <div class="modal" id="claimModal">
+                  <div class="modal-background"></div>
+                  <div class="modal-card">
+                    <header class="modal-card-head">
+                      <p class="modal-card-title">
+                        <strong class="has-text-link"><%=@task.name%></strong>
+                      </p>
+                      <button class="delete" aria-label="close"></button>
+                    </header>
+                    <section class="modal-card-body">
+                      <div class="container ">
+                        <div class="column">
+                          <p class="headline">
+                            <strong>Do you want to claim this task?</strong>
+
+                            <p class="is-small has-text-dark">To earn this task's $<%= @task.reward%> reward, you'll have to submit a Github pull request and provide that link. If accepted by the owner of the product, your reward will be added to your balance.</p>
+                          </p>
+                        </div>
+                      </div>
+                    </section>
+                    <footer class="modal-card-foot">
+
+                      <form action="/products/<%=@task.product.slug%>/versions/<%=@task.version.version_number%>/tasks/<%=@task.id%>/claim" method="post">
+                        <input type="hidden" name="_method" value="PATCH">
+
+                        <input class="button is-link" type="submit" value="Claim this task">
+                        </form>
+                    </footer>
+                  </div>
+                </div>
+                <!-- End Claim Modal -->
+
+                <%else%>
+                <p class="heading">Claim this task</p>
+                  <form>
+                  <input class="button is-light is-medium" type="submit" value="Claimed by <%= @task.user.username %>" disabled>
+                  </form>
+                <%end%>
               </div>
             </div>
           </span>
@@ -48,3 +84,22 @@
     </div>
   </div>
 </section>
+
+
+<!-- Start Modal Open/Close Button -->
+
+<script type="text/javascript">
+  document.querySelectorAll('.modal-button').forEach(function(el) {
+  el.addEventListener('click', function() {
+    var target = document.querySelector(el.getAttribute('data-target'));
+
+    target.classList.add('is-active');
+
+    target.querySelector('.delete').addEventListener('click',   function() {
+        target.classList.remove('is-active');
+     });
+  });
+});
+</script>
+
+<!-- End Modal Open/Close Button -->

@@ -2,7 +2,7 @@
   <div class="hero-body">
     <div class="container">
       <div class="columns">
-        <div class="column is-two-thirds">
+        <div class="column">
           <h1 class="title">
             <%= @greeting %>, <%= @user.username + " &#128075;" %>
           </h1>
@@ -15,7 +15,7 @@
             <% end %>
           </h2>
         </div>
-        <div class="column">
+        <!-- <div class="column">
           <div>
             <span class="level is-centered">
               <div class="is-grouped">
@@ -42,15 +42,52 @@
                 <div class="level-item has-text-centered">
                   <div>
                     <p class="heading">Claimed Task Value</p>
-                    <p class="tag is-success is-large"><%= @user.open_claimed_tasks.count %></p>
+                    <p class="tag is-success is-large">$<%= sprintf "%.2f", @user.claimed_task_value %></p>
                   </div>
                 </div>
               </div>
-
-
             </span>
           </div>
+        </div> -->
+        <div class="column">
+          <nav class="level">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Current Tasks</p>
+                <p class="title"><%= @user.open_claimed_tasks.count %></p>
+              </div>
+            </div>
+
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Current Task Value</p>
+                <p class="tag is-info is-large">
+                  $<%= sprintf "%.2f", @user.claimed_task_value %>
+                </p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Account Balance</p>
+                <p class="tag is-warning is-large">
+                  $<%= sprintf "%.2f", @user.balance %>
+                </p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Ready to Withdraw</p>
+                <p class="tag is-success is-large">
+                  $<%= sprintf "%.2f", @user.balance %>
+                </p>
+              </div>
+            </div>
+          </nav>
+
         </div>
+
+
+
       </div>
     </div>
   </div>

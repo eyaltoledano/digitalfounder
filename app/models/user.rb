@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
   def claimed_task_value
     claimed_task_rewards = []
     open_claimed_tasks.each do |task|
-      claimed_task_rewards << task.reward
+      claimed_task_rewards << task.reward.to_f
     end
     claimed_task_rewards.inject(0, :+)
   end
