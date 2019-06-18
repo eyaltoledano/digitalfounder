@@ -18,6 +18,7 @@
 
           <input class="input" type="text" name="pr_link" <% if task.pr_link.nil? %>placeholder="Enter this task's Pull Request link"<%else%> value="<%=task.pr_link%>"<%end%>>
             <select id="status" class="input" type="text" name="status" placeholder="Choose a new status">
+              <option value="Select a new status">Select a new status</option>
               <% @status_list.each do |status| %>
               <option <% if status == task.status %> class="is-active" <%end%> value="<%= status %>"><%= status %></option>
               <% end %>
@@ -27,7 +28,7 @@
     </section>
     <footer class="modal-card-foot">
         <input type="hidden" name="_method" value="PATCH">
-        <input class="button is-link" type="submit" value="Update status">
+        <input onsubmit="return confirm('Please confirm you wish to update this task.');" class="button is-link" type="submit" value="Update status">
         </form>
     </footer>
   </div>

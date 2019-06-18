@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
   def open_claimed_tasks
     open_claimed_tasks = []
     claimed_tasks.each do |task|
-      open_claimed_tasks << task if task.status != "Complete"
+      open_claimed_tasks << task if task.status != "Completed"
     end
     open_claimed_tasks
   end
@@ -57,9 +57,21 @@ class User < ActiveRecord::Base
   def pending_balance
     rewards = []
     self.open_claimed_tasks.each do |task|
-      rewards << task.reward.to_f if task.status == "Ready for Review"
+      rewards << task.reward.to_f if task.status == "Accepted"
     end
     rewards.inject(0, :+)
+  end
+
+  def has_items_for_review?
+    items_to_review = []
+
+    self.versions.each do |version|
+      version.tasks.each do |task|
+        items_to_review << task if task.status == "Ready for Review" || task.status == "Reviewing" || task.status == "PR Submitted" || task.status == "Accepted"
+      end
+    end
+
+    items_to_review.count > 0 ? true : false
   end
 
 end

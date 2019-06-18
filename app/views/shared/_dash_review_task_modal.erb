@@ -1,0 +1,54 @@
+<!-- Start Status modal -->
+<div class="modal" id="reviewTaskModal-<%=task.id%>">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        <strong class="has-text-link"><%=task.name%></strong>
+      </p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="container has-text-centered">
+        <div class="column is-vcentered">
+          <p class="content has-text-centered">
+            <a target="_blank" class="button is-large is-link" href="<%= task.pr_link %>">Review this Pull Request</a>
+          </p>
+
+          <p class="content is-size-4 has-text-justified">Mark this as <span class="tag is-success">Completed</span> if this PR satisfies your spec. Otherwise, you can mark it as <span class="tag is-danger">Rejected</span> and <a class="has-text-weight-semi-bold" href="/users/<%=task.user.slug%>"><%= task.user.username %></a> will be able to resubmit a new solution.</p>
+        </div>
+        <div class="columns content is-vcentered">
+          <div class="column is-5">
+            <label class="label"><%= task.status %></label>
+          </div>
+
+          <div class="column is-2 is-ventered">
+            <p class="has-text-centered">
+              <i class="fas fa-lg fa-angle-double-right"></i>
+            </p>
+          </div>
+
+          <div class="column is-5 is-ventered">
+            <div class="">
+              <form action="/products/<%=task.product.slug%>/versions/<%=task.version.version_number%>/tasks/<%=task.id%>/review_task" method="post">
+                    </div>
+
+              <select id="status" class="input" type="text" name="status">
+                <option value="Select a new status">Select a new status</option>
+                <% @review_status_list.each do |status| %>
+                <option <% if status == task.status %> class="is-active" <%end%> value="<%= status %>"><%= status %></option>
+                <% end %>
+              </select>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+        <input type="hidden" name="_method" value="PATCH">
+        <input onsubmit="return confirm('Are you sure you wish to update this task's status?');" class="button is-link" type="submit" value="Update task status">
+        </form>
+    </footer>
+  </div>
+</div>
+<!-- End Status Modal -->

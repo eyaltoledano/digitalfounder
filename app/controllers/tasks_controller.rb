@@ -37,6 +37,7 @@ class TasksController < ApplicationController
       @task.save
       @task.version.tasks << @task
       flash[:notice] = "The task was successfully created."
+
       redirect "/products/#{@product.slug}/versions/#{@version.version_number}"
     end
   end
@@ -63,17 +64,64 @@ class TasksController < ApplicationController
   # PATCH: /tasks/5
   patch "/products/:slug/versions/:version_number/tasks/:id/update_status" do
     @task = Task.find(params[:id])
-    @task.status = params[:status]
-    @task.pr_link = params[:pr_link]
-    @task.save
 
-    @task_user = @task.user
-
-    if @task.status == "Complete"
-      @task_user.balance = @task_user.balance + @task.reward
-      @task_user.save
+    if params[:status] == "Choose a new status"
+      flash[:notice] = "You need to select a new status for #{@task.name}. Please try again."
+      redirect "/dashboard"
+    elsif !params[:pr_link].include?("github.com")
+      flash[:notice] = "Please make sure to submit your task with a valid Pull Request URL from GitHub. Your PR should be submitted to the project's repository."
+      redirect "/dashboard"
     end
-    redirect "/dashboard"
+
+    if params[:status] == "Ready for Review"
+      @task.status = "PR Submitted"
+    else
+      @task.status = params[:status]
+    end
+
+
+    @task.pr_link = params[:pr_link]
+
+    if @task.save
+      flash[:notice] = "The status for #{@task.name} was updated to #{@task.status}."
+
+      @task_user = @task.user
+
+      if @task.status == "Complete"
+        @task_user.balance = @task_user.balance + @task.reward
+        @task_user.save
+      end
+      redirect "/dashboard"
+    else
+      flash[:notice] = "Something went wrong trying to update the status for #{@task}. Please verify your submission and try again."
+      redirect "/dashboard"
+    end
+  end
+
+  patch "/products/:slug/versions/:version_number/tasks/:id/review_task" do
+    @task = Task.find(params[:id])
+
+    if params[:status] == "Choose a new status"
+      flash[:notice] = "You need to select a new status for #{@task.name}. Please try again."
+      redirect "/dashboard"
+    end
+
+    @task.status = params[:status]
+
+    if @task.status == "Completed"
+      rewardee = @task.user
+      rewardee.balance += @task.reward.to_f
+      rewardee.save
+    end
+    
+    if @task.save
+      flash[:notice] = "The status for #{@task.name} was updated to #{@task.status}."
+      redirect "/dashboard"
+    else
+      flash[:notice] = "Something went wrong trying to update the status for #{@task}."
+      redirect "/dashboard"
+    end
+
   end
 
   patch '/products/:slug/versions/:version_number/tasks/:id/claim' do

@@ -20,14 +20,14 @@
           <nav class="level">
             <div class="level-item has-text-centered">
               <div>
-                <p class="heading">Current Tasks</p>
+                <p class="heading">Claimed Tasks</p>
                 <p class="title"><%= @user.open_claimed_tasks.count %></p>
               </div>
             </div>
 
             <div class="level-item has-text-centered">
               <div>
-                <p class="heading">Current Tasks Value</p>
+                <p class="heading">Claimed Tasks Value</p>
                 <p class="title has-text-success has-text-weight-semibold">
                   $<%= sprintf "%.2f", @user.claimed_task_value %>
                 </p>
@@ -62,9 +62,111 @@
 
 <br>
 
+<!-- Begin Tasks To Review Section -->
+
+<section class="container" id="dashboard-review-section">
+  <h2 class="title">Tasks to Review</h2>
+
+  <% if @user.has_items_for_review? %>
+  <table class="table is-size-7">
+
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Version</th>
+        <th>Task Name</th>
+        <th>Description</th>
+        <th>Reward</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @user_owned_products.each do |product| %>
+
+        <% product.versions.each do |version| %>
+
+            <% version.tasks.each do |task| %>
+
+              <% if task.status == "Ready for Review" || task.status == "Reviewing" || task.status == "PR Submitted" ||
+            task.status == "Accepted" %>
+                <%= erb :'/shared/_dash_review_task_modal', locals: {task: task} %>
+                <tr>
+                  <th><%= task.id %></th>
+                  <td><a href="/products/<%= task.product.slug %>">
+                    <%= task.product.name %></a>
+                  </td>
+                  <td>
+                    <a class="tag" href="/products/<%= task.product.slug %>/versions/<%= task.version.version_number %>"><%= task.version.version_number %></a>
+                  </td>
+                  <td><strong><%= task.name %></strong></td>
+                  <td><%= task.description %></td>
+                  <td>
+                    <strong class="has-text-success">
+                      $ <%= sprintf "%.2f", task.reward %>
+                    </strong>
+                  </td>
+                  <td>
+                    <%= task.status %>
+                  </td>
+                  <td>
+                    <% unless task.status == "Completed" %>
+                      <% if task.status == "Accepted" %>
+
+                      <a data-target="#reviewTaskModal-<%=task.id%>" aria-haspopup="true" class="modal-button button is-small is-white has-text-link">
+                        Reopen Task
+                      </a>
+
+                      <% else %>
+
+                        <a data-target="#reviewTaskModal-<%=task.id%>" aria-haspopup="true" class="modal-button button is-small is-warning">
+                          Review Task
+                        </a>
+
+                      <% end %>
+
+                    <% else %>
+                    <a class=" button is-small is-inverted" disabled>
+                      <span><i class="fas fa-check has-text-success"></i> Completed</span>
+                    </a>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+
+            <% end %>
+
+        <% end %>
+
+      <% end %>
+    </tbody>
+  </table>
+
+  <% else %>
+  <div class="columns has-text-centered">
+    <div class="column is-vcentered">
+      <div class="subtitle">
+        Nothing to review today.
+      </div>
+    </div>
+  </div>
+
+  <% end %>
+
+
+</section>
+
+<!-- End Tasks to Review Section -->
+
+<br>
+
+<!-- Begin Claimed Tasks Section -->
+
 <section class="container" id="dashboard-tasks-table-section">
   <h2 class="title">Your Claimed Tasks</h2>
-  <table class="table">
+  <table class="table is-size-7">
 
     <thead>
       <tr>
@@ -81,46 +183,66 @@
 
     <tbody>
       <% @user.claimed_tasks.each do |task| %>
-      <%= erb :'/shared/_dash_update_status_modal', locals: {task: task} %>
-      <tr>
-        <th><%= task.id %></th>
-        <td><a href="/products/<%= task.product.slug %>">
-          <%= task.product.name %></a>
-        </td>
-        <td>
-          <a class="tag" href="/products/<%= task.product.slug %>/versions/<%= task.version.version_number %>"><%= task.version.version_number %></a>
-        </td>
-        <td><strong><%= task.name %></strong></td>
-        <td><%= task.description %></td>
-        <td>
-          <strong class="has-text-success">
-            $ <%= sprintf "%.2f", task.reward %>
-          </strong>
-        </td>
-        <td>
-          <%= task.status %>
-        </td>
-        <td>
-          <% unless task.status == "Complete" %>
-          <a data-target="#statusModal-<%=task.id%>" aria-haspopup="true" class="modal-button button is-small is-inverted">
-            Update status
-          </a>
-          <% else %>
-          <a class=" button is-small is-inverted" disabled>
-            <span><i class="fas fa-check has-text-success"></i> Completed</span>
-          </a>
-          <% end %>
-        </td>
-      </tr>
+
+
+
+          <%= erb :'/shared/_dash_update_status_modal', locals: {task: task} %>
+          <tr>
+            <th><%= task.id %></th>
+            <td><a href="/products/<%= task.product.slug %>">
+              <%= task.product.name %></a>
+            </td>
+            <td>
+              <a class="tag" href="/products/<%= task.product.slug %>/versions/<%= task.version.version_number %>"><%= task.version.version_number %></a>
+            </td>
+            <td><strong><%= task.name %></strong></td>
+            <td><%= task.description %></td>
+            <td>
+              <strong class="has-text-success">
+                $ <%= sprintf "%.2f", task.reward %>
+              </strong>
+            </td>
+            <td>
+              <%= task.status %>
+            </td>
+            <td>
+              <% if task.status == "Completed" %>
+              <a class=" button is-small is-success is-inverted" disabled>
+                <strong><i class="fas fa-check-double has-text-success"></i> Complete +$<%=  sprintf "%.2f", task.reward %></strong>
+              </a>
+              <% elsif task.status == "PR Submitted" %>
+              <a class=" button is-small is-inverted" disabled>
+                <span><i class="fas fa-spinner fa-pulse"></i> PR Submitted</span>
+              <% elsif task.status == "Reviewing" %>
+              <a class=" button is-small is-warning" disabled>
+                <span><i class="fas fa-spinner fa-pulse"></i> Reviewing</span>
+              <% elsif task.status == "Accepted" %>
+              <a class=" button is-small is-success is-inverted" disabled>
+                <span><i class="fas fa-check has-text-success"></i> Accepted!</span>
+              <% elsif task.status == "Rejected" %>
+              <a data-target="#statusModal-<%=task.id%>" aria-haspopup="true" class="modal-button button is-small is-danger">
+                <span><i class="fas fa-exclamation-triangle"></i> Submit New PR</span>
+              </a>
+              <% else %>
+              <a data-target="#statusModal-<%=task.id%>" aria-haspopup="true" class="modal-button button is-small is-link">
+                Update status
+              </a>
+              <% end %>
+            </td>
+          </tr>
       <% end %>
     </tbody>
   </table>
 </section>
 
+<!-- End Claimed Tasks Section -->
+
+<!-- Start User's Products Sections -->
+
 <section class="container" id="dashboard-products-table-section">
   <h2 class="title">Your Products</h2>
   <a href="/products/new" class="button is-small">New product</a>
-  <table class="table">
+  <table class="table is-size-7">
 
     <thead>
       <tr>
@@ -161,6 +283,8 @@
     </tbody>
   </table>
 </section>
+
+<!-- End User's Products Section -->
 
 <!-- Start Modal Open/Close Button -->
 

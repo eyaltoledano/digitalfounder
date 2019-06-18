@@ -35,11 +35,13 @@ class UsersController < ApplicationController
         @greeting = "Good evening"
       end
       @owned_products = @user.products.count
+      @user_owned_products = @user.products
     else
       redirect '/login'
       flash[:notice] = "You need to be logged in to access this page."
     end
     @status_list = ["Open", "Claimed", "Researching", "Writing specs", "In progress", "Ready for Review"]
+    @review_status_list = ["Reviewing", "Accepted", "Rejected", "Completed"]
     erb :"/users/dashboard.html"
   end
 
