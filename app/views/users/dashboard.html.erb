@@ -8,23 +8,23 @@
           </h1>
           <h2 class="subtitle">
               <% if @owned_products == 0 %>
-                You don't have any products to work on yet.
-                <a href="/products/new" class="button is-small is-primary is-outlined">Create your first product</a>
+                You haven't created any products for you to plan.
+                <a href="/products/new" class="tag is-primary">Create a product</a>
               <% else %>
               <p class="content">
                 <span class="tag is-dark">You manage <%= @owned_products %> product<%= "s" if @owned_products > 1 %></span>
               <% end %>
 
-              <% if @user.open_claimed_tasks %>
+              <% if @user.open_claimed_tasks_count > 0 %>
                 <span class="tag is-link">There <%= "are" if @user.open_claimed_tasks.count > 1 %><%= "is" if @user.open_claimed_tasks.count == 1 %> <%= @user.open_claimed_tasks.count %> open claimed task<%= "s" if @user.open_claimed_tasks.count > 1 %> to work on</span>
               <% else %>
-                <span class="tag is-dark">You haven't claimed any tasks to work on</span>
+                <span class="tag is-dark">You haven't claimed any tasks to work on yet</span>
               <% end %>
 
               <% if @user.has_items_for_review? %>
                 <span class="tag is-warning">You have <%= @user.tasks_for_review.count %> open task<%= "s" if @user.tasks_for_review.count > 1 %> to review</span>
               <% else %>
-                <span class="tag is-dark">You don't have any tasks to review right now.</span>
+                <span class="tag is-dark">Your products don't have any task submissions to review right now</span>
               <% end %>
 
             </p>
@@ -51,7 +51,7 @@
             </div>
             <div class="level-item has-text-centered">
               <div>
-                <p class="heading">Pending</p>
+                <p class="heading">Pending Rewards</p>
                 <p class="tag <% if @user.pending_balance > 0 %>is-warning<%else%>is-dark<%end%> is-large">
                   $<%= sprintf "%.2f", @user.pending_balance %>
                 </p>
@@ -84,6 +84,7 @@
   <h2 class="title">Tasks to Review</h2>
 
   <% if @user.has_items_for_review? %>
+
   <table class="table is-size-7">
 
     <thead>
@@ -161,10 +162,11 @@
   </table>
 
   <% else %>
+
   <div class="columns has-text-centered">
     <div class="column is-vcentered">
       <div class="subtitle">
-        Nothing to review today.
+        You don't have any tasks to review right now. &#128519;
       </div>
     </div>
   </div>
@@ -182,6 +184,9 @@
 
 <section class="container" id="dashboard-tasks-table-section">
   <h2 class="title">Your Claimed Tasks</h2>
+
+  <% if @user.open_claimed_tasks_count > 0 %>
+
   <table class="table is-size-7">
 
     <thead>
@@ -249,6 +254,21 @@
       <% end %>
     </tbody>
   </table>
+
+  <% else %>
+
+  <div class="columns has-text-centered">
+    <div class="column is-vcentered">
+      <div class="subtitle">
+        You haven't claimed any tasks yet. &#128549;
+
+        <p><a href="/products">Browse products</a> and <span class="tag is-success">Claim</span> a task to start earning rewards.</p>
+      </div>
+    </div>
+  </div>
+
+  <% end %>
+
 </section>
 
 <!-- End Claimed Tasks Section -->
@@ -257,6 +277,7 @@
 
 <section class="container" id="dashboard-products-table-section">
   <h2 class="title">Your Products</h2>
+  <% if @owned_products > 0 %>
   <a href="/products/new" class="button is-small">New product</a>
   <table class="table is-size-7">
 
@@ -298,6 +319,22 @@
       <% end %>
     </tbody>
   </table>
+  <% else %>
+
+  <div class="columns has-text-centered">
+    <div class="column is-vcentered">
+      <div class="title is-size-4">
+        <p class="has-text-centered">
+          <a class="button is-medium is-success is-outlined" href="/products/new">Create your first product</a>
+        </p>
+        <div class="column is-three-fifths is-offset-one-fifth">
+          <p class="subtitle"><a href="/products/new">Create your first product</a>, build the plan for your first version and inspire contributors to claim tasks and complete them for cash and equity rewards.  &#128640;</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% end %>
 </section>
 
 <!-- End User's Products Section -->

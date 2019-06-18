@@ -41,6 +41,10 @@ class User < ActiveRecord::Base
     open_claimed_tasks
   end
 
+  def open_claimed_tasks_count
+    open_claimed_tasks.count
+  end
+
   def update_task_status(task, new_status)
     task.status = new_status
     task.save
