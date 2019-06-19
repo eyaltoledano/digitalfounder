@@ -25,7 +25,7 @@
             <div class="level-item has-text-centered">
               <div>
                 <p class="heading">Version Progress</p>
-                <p class="title"><%= @version.progress if @version%>%</p>
+                <p class="title"><%= @version.progress.to_i if @version%>%</p>
               </div>
             </div>
             <div class="level-item has-text-centered">

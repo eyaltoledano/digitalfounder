@@ -41,7 +41,7 @@ class Version < ActiveRecord::Base
 
   def progress
     completed = []
-    self.tasks.each {|task| completed << task if task.status == "Complete" }
+    self.tasks.each {|task| completed << task if task.status == "Completed" }
     result = completed.count.percent_of(self.tasks.count)
     sprintf "%.0f", result
   end

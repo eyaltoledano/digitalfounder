@@ -32,7 +32,7 @@ class VersionsController < ApplicationController
       @version = Version.create(description: params[:description], release_date: params[:release_date], version_number: params[:version_number])
       @version.product = @product
       @version.user = @user
-      @version.version_number = "v#{@product.versions.count}"
+      @version.version_number = "v#{@product.versions.count + 1}"
       @version.progress = "0"
       @version.save
       flash[:notice] = "#{@product.name} #{@version.version_number} was successfully created!"

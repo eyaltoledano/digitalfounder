@@ -68,7 +68,7 @@ class TasksController < ApplicationController
     if params[:status] == "Choose a new status"
       flash[:notice] = "You need to select a new status for #{@task.name}. Please try again."
       redirect "/dashboard"
-    elsif !params[:pr_link].include?("github.com")
+    elsif params[:status] == "Ready for Review" && !params[:pr_link].include?("github.com")
       flash[:notice] = "Please make sure to submit your task with a valid Pull Request URL from GitHub. Your PR should be submitted to the project's repository."
       redirect "/dashboard"
     end
@@ -113,7 +113,7 @@ class TasksController < ApplicationController
       rewardee.balance += @task.reward.to_f
       rewardee.save
     end
-    
+
     if @task.save
       flash[:notice] = "The status for #{@task.name} was updated to #{@task.status}."
       redirect "/dashboard"

@@ -1,7 +1,7 @@
 <h1 class="title has-text-centered"><%= @user.username%> is creating v<%=@product.versions.count + 1%> of <%=@product.name%>! &#127894;</h1>
 
 <div class="column is-half is-offset-one-quarter">
-  <form class="form" id="new_version" action="/<%=@product.slug%>/new_version" method="post">
+  <form class="form" id="new_version" action="/products/<%=@product.slug%>/new_version" method="post">
 
       <div class="field medium">
         <div class="control has-icons-left">

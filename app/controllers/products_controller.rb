@@ -82,12 +82,15 @@ class ProductsController < ApplicationController
   delete "/products/:slug/delete" do
     redirect '/login' && flash[:notice] = "You need to be logged in to delete a product." if !logged_in?
 
-    if @user != current_user
+    @product = Product.find_by_slug(params[:slug])
+    if @product.user != current_user
       flash[:notice] = "Can't delete someone else's product. Play nice!"
       redirect '/dashboard'
     else
       @product = Product.find_by_slug(params[:slug])
+      product_name = @product.name
       @product.destroy
+      flash[:notice] = "It's done. #{product_name} was destroyed."
       redirect "/settings"
     end
   end
