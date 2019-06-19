@@ -118,12 +118,12 @@
         </td>
         <td>
           <% if task.user.nil? %>
-          <a data-target="#claimModal" aria-haspopup="true" class="title modal-button button is-success is-small">
+          <a data-target="#claimModal-<%= task.id %>" aria-haspopup="true" class="title modal-button button is-success is-small">
             Claim
           </a>
 
           <!-- Start Claim modal -->
-          <div class="modal" id="claimModal">
+          <div class="modal" id="claimModal-<%= task.id %>">
             <div class="modal-background"></div>
             <div class="modal-card">
               <header class="modal-card-head">
