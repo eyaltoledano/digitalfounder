@@ -1,0 +1,88 @@
+<section class="container" id="dashboard-tasks-table-section">
+  <h2 class="title">Your Claimed Tasks</h2>
+
+  <% if @user.open_claimed_tasks_count > 0 %>
+
+  <table class="table is-size-7">
+
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Version</th>
+        <th>Task Name</th>
+        <th>Description</th>
+        <th>Reward</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @user.claimed_tasks.each do |task| %>
+
+
+
+          <%= erb :'/shared/_dash_update_status_modal', locals: {task: task} %>
+          <tr>
+            <th><%= task.id %></th>
+            <td><a href="/products/<%= task.product.slug %>">
+              <%= task.product.name %></a>
+            </td>
+            <td>
+              <a class="tag" href="/products/<%= task.product.slug %>/versions/<%= task.version.version_number %>"><%= task.version.version_number %></a>
+            </td>
+            <td><strong><%= task.name %></strong></td>
+            <td><%= task.description %></td>
+            <td>
+              <strong class="has-text-success">
+                $ <%= sprintf "%.2f", task.reward %>
+              </strong>
+            </td>
+            <td>
+              <%= task.status %>
+            </td>
+            <td>
+              <% if task.status == "Completed" %>
+              <a class=" button is-small is-success is-inverted" disabled>
+                <strong><i class="fas fa-check-double has-text-success"></i> Complete +$<%=  sprintf "%.2f", task.reward %></strong>
+              </a>
+              <% elsif task.status == "PR Submitted" %>
+              <a class=" button is-small is-inverted" disabled>
+                <span><i class="fas fa-spinner fa-pulse"></i> PR Submitted</span>
+              <% elsif task.status == "Reviewing" %>
+              <a class=" button is-small is-warning" disabled>
+                <span><i class="fas fa-spinner fa-pulse"></i> Reviewing</span>
+              <% elsif task.status == "Accepted" %>
+              <a class=" button is-small is-success is-inverted" disabled>
+                <span><i class="fas fa-check has-text-success"></i> Accepted!</span>
+              <% elsif task.status == "Rejected" %>
+              <a data-target="#statusModal-<%=task.id%>" aria-haspopup="true" class="modal-button button is-small is-danger">
+                <span><i class="fas fa-exclamation-triangle"></i> Submit New PR</span>
+              </a>
+              <% else %>
+              <a data-target="#statusModal-<%=task.id%>" aria-haspopup="true" class="modal-button button is-small is-link">
+                Update status
+              </a>
+              <% end %>
+            </td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% else %>
+
+  <div class="columns has-text-centered">
+    <div class="column is-vcentered">
+      <div class="subtitle">
+        You haven't claimed any tasks yet. &#128549;
+
+        <p><a href="/products">Browse products</a> and <span class="tag is-success">Claim</span> a task to start earning rewards.</p>
+      </div>
+    </div>
+  </div>
+
+  <% end %>
+
+</section>

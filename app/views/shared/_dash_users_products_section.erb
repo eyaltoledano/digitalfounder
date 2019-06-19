@@ -1,0 +1,61 @@
+<section class="container" id="dashboard-products-table-section">
+  <h2 class="title">Your Products</h2>
+  <% if @owned_products > 0 %>
+  <a href="/products/new" class="button is-small">New product</a>
+  <table class="table is-size-7">
+
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Repository</th>
+        <th>Current Station</th>
+        <th>Last update</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @user.products.each do |product| %>
+      <tr>
+        <th><%= product.id %></th>
+        <td><a href="/products/<%= product.slug %>">
+          <%= product.name %></a>
+        </td>
+        <td><%= product.description %></td>
+        <td><%= product.status %></td>
+        <td>
+          <a href="<%= product.git_repo %>"><%= product.git_repo %></a>
+        </td>
+        <td>
+          <% if product.versions.empty? %>
+          <a class="button is-link" href="/products/<%=product.slug%>/new_version">Create v1</a>
+          <% else %>
+          <a class="tag is-link" href="/products/<%=product.slug%>/versions/<%=product.versions.last.version_number%>">
+            <%= product.versions.last.version_number %>
+          </a>
+          <% end %>
+        </td>
+        <td><%= product.updated_at.strftime("%B %-d, %Y, %H:%M") %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% else %>
+
+  <div class="columns has-text-centered">
+    <div class="column is-vcentered">
+      <div class="title is-size-4">
+        <p class="has-text-centered">
+          <a class="button is-medium is-success is-outlined" href="/new_product">Create your first product</a>
+        </p>
+        <div class="column is-three-fifths is-offset-one-fifth">
+          <p class="subtitle"><a href="/products/new">Create your first product</a>, build the plan for your first version and inspire contributors to claim tasks and complete them for cash and equity rewards.  &#128640;</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% end %>
+</section>

@@ -1,0 +1,95 @@
+<section class="container" id="dashboard-review-section">
+  <h2 class="title">Tasks to Review</h2>
+
+  <% if @user.has_items_for_review? %>
+
+  <table class="table is-size-7">
+
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Version</th>
+        <th>Task Name</th>
+        <th>Description</th>
+        <th>Reward</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @user_owned_products.each do |product| %>
+
+        <% product.versions.each do |version| %>
+
+            <% version.tasks.each do |task| %>
+
+              <% if task.status == "Ready for Review" || task.status == "Reviewing" || task.status == "PR Submitted" ||
+            task.status == "Accepted" %>
+                <%= erb :'/shared/_dash_review_task_modal', locals: {task: task} %>
+                <tr>
+                  <th><%= task.id %></th>
+                  <td><a href="/products/<%= task.product.slug %>">
+                    <%= task.product.name %></a>
+                  </td>
+                  <td>
+                    <a class="tag" href="/products/<%= task.product.slug %>/versions/<%= task.version.version_number %>"><%= task.version.version_number %></a>
+                  </td>
+                  <td><strong><%= task.name %></strong></td>
+                  <td><%= task.description %></td>
+                  <td>
+                    <strong class="has-text-success">
+                      $ <%= sprintf "%.2f", task.reward %>
+                    </strong>
+                  </td>
+                  <td>
+                    <%= task.status %>
+                  </td>
+                  <td>
+                    <% unless task.status == "Completed" %>
+                      <% if task.status == "Accepted" %>
+
+                      <a data-target="#reviewTaskModal-<%=task.id%>" aria-haspopup="true" class="modal-button button is-small is-white has-text-link">
+                        Reopen Task
+                      </a>
+
+                      <% else %>
+
+                        <a data-target="#reviewTaskModal-<%=task.id%>" aria-haspopup="true" class="modal-button button is-small is-warning">
+                          Review Task
+                        </a>
+
+                      <% end %>
+
+                    <% else %>
+                    <a class=" button is-small is-inverted" disabled>
+                      <span><i class="fas fa-check has-text-success"></i> Completed</span>
+                    </a>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+
+            <% end %>
+
+        <% end %>
+
+      <% end %>
+    </tbody>
+  </table>
+
+  <% else %>
+
+  <div class="columns has-text-centered">
+    <div class="column is-vcentered">
+      <div class="subtitle">
+        You don't have any tasks to review right now. &#128519;
+      </div>
+    </div>
+  </div>
+
+  <% end %>
+
+
+</section>
