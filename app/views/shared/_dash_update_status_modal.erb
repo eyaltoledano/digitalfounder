@@ -6,30 +6,81 @@
       <p class="modal-card-title">
         <strong class="has-text-link"><%=task.name%></strong>
         <label class="label">Current Status: <%= task.status %></label>
+
       </p>
       <button class="delete" aria-label="close"></button>
     </header>
     <section class="modal-card-body">
       <div class="container has-text-centered">
-        <div class="column">
-          <div class="">
-    <form action="/products/<%=task.product.slug%>/versions/<%=task.version.version_number%>/tasks/<%=task.id%>/update_status" method="post">
+        <div class="columns">
+
+            <div class="">
+              <form action="/products/<%=task.product.slug%>/versions/<%=task.version.version_number%>/tasks/<%=task.id%>/update_status" method="post">
+            </div>
+
+          <div class="column">
+            <div class="columns is-vcentered">
+              <div class="column is-two-fifths">
+                <label class="label is-normal">New status:</label>
+              </div>
+              <div class="column if-three-fifths">
+                <div class="select">
+                  <select id="status" class="input" type="text" name="status" placeholder="Choose a new status">
+                    <option value="Select a new status">Select a new status</option>
+                    <% @status_list.each do |status| %>
+                    <option <% if status == task.status %> selected <%end%> value="<%= status %>"><%= status %></option>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
           </div>
 
-          <input class="input" type="text" name="pr_link" <% if task.pr_link.nil? %>placeholder="Enter this task's Pull Request link"<%else%> value="<%=task.pr_link%>"<%end%>>
-            <select id="status" class="input" type="text" name="status" placeholder="Choose a new status">
-              <option value="Select a new status">Select a new status</option>
-              <% @status_list.each do |status| %>
-              <option <% if status == task.status %> class="is-active" <%end%> value="<%= status %>"><%= status %></option>
-              <% end %>
-            </select>
+          <div class="column">
+            <div class="field">
+              <p class="control has-icons-left">
+                <span class="icon is-small is-left">
+                  <i class="fab fa-github"></i>
+                </span>
+                <input class="input" type="text" name="pr_link" <% if task.pr_link.empty? %>placeholder="Pull Request URL (When Ready)"<%else%> value="<%=task.pr_link%>"<%end%>>
+              </div>
+            </p>
+
+
+          </div>
+
         </div>
+        <!-- Start give up on task button -->
+        <div class="">
+          <form action="/products/<%=task.product.slug%>/versions/<%=task.version.version_number%>/tasks/<%=task.id%>/give_up" method="post">
+
+            <input type="hidden" name="_method" value="PATCH">
+            <input type="hidden" name="status" value="Open">
+
+            <div class="subheadline is-grouped">Is this task too challenging or not a good fit? <input onclick="return confirm('Are you sure you wish to give up on ths task? Someone else will be able to claim it.');" class="button has-danger-text is-light is-small" type="submit" value="Give up on this task &#9995;"></div>
+
+          </form>
+        </div>
+        <!-- End give up on task button -->
       </div>
     </section>
     <footer class="modal-card-foot">
-        <input type="hidden" name="_method" value="PATCH">
-        <input onsubmit="return confirm('Please confirm you wish to update this task.');" class="button is-link" type="submit" value="Update status">
-        </form>
+
+
+      <div class="field">
+        <p class="control is-pulled-right">
+          <!-- Start Update Status button -->
+          <input type="hidden" name="_method" value="PATCH">
+          <input onclick="return confirm('Please confirm you wish to update this task.');" class="button is-link" type="submit" value="Update status">
+          </form>
+
+          <!-- End update status button -->
+        </p>
+
+      </div>
+
     </footer>
   </div>
 </div>

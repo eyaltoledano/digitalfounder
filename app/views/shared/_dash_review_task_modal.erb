@@ -34,10 +34,12 @@
                     </div>
 
               <select id="status" class="input" type="text" name="status">
-                <option value="Select a new status">Select a new status</option>
-                <% @review_status_list.each do |status| %>
-                <option <% if status == task.status %> class="is-active" <%end%> value="<%= status %>"><%= status %></option>
-                <% end %>
+                <div class="select">
+                  <option value="Select a new status">Select a new status</option>
+                  <% @review_status_list.each do |status| %>
+                  <option <% if status == task.status %> class="is-active" <%end%> value="<%= status %>"><%= status %></option>
+                  <% end %>
+                </div>
               </select>
           </div>
 
@@ -46,7 +48,7 @@
     </section>
     <footer class="modal-card-foot">
         <input type="hidden" name="_method" value="PATCH">
-        <input onsubmit="return confirm('Are you sure you wish to update this task's status?');" class="button is-link" type="submit" value="Update task status">
+        <input onclick="return confirm('Are you sure you wish to update this task's status?');" class="button is-link" type="submit" value="Update task status">
         </form>
     </footer>
   </div>

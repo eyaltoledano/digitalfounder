@@ -65,7 +65,7 @@ class TasksController < ApplicationController
   patch "/products/:slug/versions/:version_number/tasks/:id/update_status" do
     @task = Task.find(params[:id])
 
-    if params[:status] == "Choose a new status"
+    if params[:status] == "Select a new status"
       flash[:notice] = "You need to select a new status for #{@task.name}. Please try again."
       redirect "/dashboard"
     elsif params[:status] == "Ready for Review" && !params[:pr_link].include?("github.com")
@@ -101,7 +101,7 @@ class TasksController < ApplicationController
   patch "/products/:slug/versions/:version_number/tasks/:id/review_task" do
     @task = Task.find(params[:id])
 
-    if params[:status] == "Choose a new status"
+    if params[:status] == "Select a new status"
       flash[:notice] = "You need to select a new status for #{@task.name}. Please try again."
       redirect "/dashboard"
     end
@@ -128,6 +128,23 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     current_user.claim(@task)
     redirect "/products/#{@task.product.slug}/versions/#{@task.version.version_number}"
+  end
+
+  patch "/products/:slug/versions/:version_number/tasks/:id/give_up" do
+    @task = Task.find(params[:id])
+    @task.status = params[:status]
+
+    if @task.status == "Open"
+      @task.user = nil
+    end
+
+    if @task.save
+      flash[:notice] = "You gave up on #{@task.name}. You or anybody else can now claim it again."
+      redirect "/dashboard"
+    else
+      flash[:notice] = "Something went wrong trying to give up on #{@task}. This is a bit awkward. Mind trying again or getting in touch?"
+      redirect "/dashboard"
+    end
   end
 
   # DELETE: /tasks/5/delete
