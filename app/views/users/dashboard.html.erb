@@ -1,10 +1,10 @@
-<section class="hero is-light is-bold" id="dashboard_hero">
+<section class="hero <% if @greeting[:text] == "Have a productive day" || @greeting[:text] == "Good afternoon" %> is-light <%else%> is-dark <% end %> is-bold" id="dashboard_hero">
   <div class="hero-body">
     <div class="container">
       <div class="columns">
         <div class="column">
           <h1 class="title">
-            <%= @greeting %>, <%= @user.username + " &#128075;" %>
+            <%= @greeting[:text] %>, <%= @user.username + " #{@greeting[:emoji]}" %>
           </h1>
           <h2 class="subtitle">
               <% if @owned_products == 0 %>

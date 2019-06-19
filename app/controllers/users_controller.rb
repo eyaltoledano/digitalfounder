@@ -28,11 +28,11 @@ class UsersController < ApplicationController
       @user = User.find(session[:user_id])
       time = Time.now.hour
       if time <= 11 || time == 0
-        @greeting = "Good morning"
+        @greeting = {text: "Have a productive day", emoji: "&#127749;"}
       elsif time >= 11 && time < 18
-        @greeting = "Good afternoon"
+        @greeting = {text: "Good afternoon", emoji: "&#127774;"}
       elsif time >= 18 && time < 24
-        @greeting = "Good evening"
+        @greeting = {text: "Happy moonlighting", emoji: "&#127765;"}
       end
       @owned_products = @user.products.count
       @user_owned_products = @user.products
