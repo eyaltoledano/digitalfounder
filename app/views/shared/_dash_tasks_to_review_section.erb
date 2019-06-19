@@ -13,6 +13,7 @@
         <th>Task Name</th>
         <th>Description</th>
         <th>Reward</th>
+        <th>Contributor</th>
         <th>Status</th>
         <th></th>
       </tr>
@@ -42,6 +43,9 @@
                     <strong class="has-text-success">
                       $ <%= sprintf "%.2f", task.reward %>
                     </strong>
+                  </td>
+                  <td>
+                    <a href="/users/<%=task.user.slug%>"><%=task.user.username%></a>
                   </td>
                   <td>
                     <%= task.status %>

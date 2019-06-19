@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
   # GET: /products
 
   get "/products" do
-    @user = User.find(session[:user_id])
+    @user = User.find(session[:user_id]) if logged_in?
     @products = Product.all
     erb :"/products/index.html"
   end
