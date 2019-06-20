@@ -13,6 +13,7 @@ gem 'bcrypt'
 gem 'tux'
 gem 'rack-flash3'
 gem 'activesupport'
+gem 'rails-erd'
 
 group :test do
   gem 'rspec'

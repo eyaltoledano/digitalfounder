@@ -48,7 +48,7 @@
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading">Current Version</p>
-                  <% if @versions.empty? %>
+                  <% if @versions.empty? || @versions.nil? %>
                     <p class="title">N/A</p>
                   <% else %>
                     <p class="title">
