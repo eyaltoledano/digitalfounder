@@ -1,10 +1,10 @@
 development:
-  adapter: postgresql
+  adapter: sqlite3
   encoding: unicode
-  database: database_name
+  database: development
   pool: 2
-  username: your_username
-  password: your_password
+  username:
+  password: 
 production:
   adapter: postgresql
   encoding: unicode
