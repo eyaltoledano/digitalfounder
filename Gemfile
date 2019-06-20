@@ -14,6 +14,7 @@ gem 'tux'
 gem 'rack-flash3'
 gem 'activesupport'
 gem 'rails-erd'
+gem 'pg'
 
 group :test do
   gem 'rspec'
