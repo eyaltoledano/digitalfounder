@@ -15,7 +15,7 @@ gem 'tux'
 gem 'rack-flash3'
 gem 'activesupport'
 gem 'rails-erd'
-gem 'pg'
+gem 'pg', '~> 0.15'
 gem 'sqlite3', :group => :development
 gem 'puma', :group => :production
 
