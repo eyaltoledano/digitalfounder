@@ -11,8 +11,10 @@ end
 
 use Rack::MethodOverride
 
-run ApplicationController
+use ApplicationController
 use TasksController
 use VersionsController
 use ProductsController
 use UsersController
+
+run Sinatra::Application
